@@ -44,7 +44,29 @@
         </div>
       </li>
 
-      <!-- Employees End Divider  -->
+      <!-- Employee End Divider  -->
+      <hr class="sidebar-divider">
+
+        <div class="sidebar-heading">
+        Leave
+        </div>
+
+        <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLeave" aria-expanded="true" aria-controls="collapseLeave">
+          <!-- <i class="fas fa-fw fa-cog"></i> -->
+          <i class="fas fa fa-users"></i>
+          <span>Leave</span>
+        </a>
+        <div id="collapseLeave" class="collapse" aria-labelledby="headingLeave" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Manage Leave:</h6>
+            <a class="collapse-item" href="/leave/request">Request Leave</a>
+            <a class="collapse-item" href="/leave/approve">Approve Leave</a>
+          </div>
+        </div>
+      </li>
+
+       <!-- Leave End Divider  -->
       <hr class="sidebar-divider">
 
       <!-- Heading -->
@@ -308,7 +330,7 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Admin</span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Session::get('name') }}</span>
                 <!-- <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60"> -->
               </a>
               <!-- Dropdown - User Information -->
@@ -317,14 +339,14 @@
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Profile
                 </a>
-                <a class="dropdown-item" href="#">
+                <!-- <a class="dropdown-item" href="#">
                   <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                   Settings
                 </a>
                 <a class="dropdown-item" href="#">
                   <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                   Activity Log
-                </a>
+                </a> -->
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>

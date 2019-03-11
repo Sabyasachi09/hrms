@@ -17,6 +17,7 @@ use App\designation;
 use App\department;
 use App\sport;
 use App\institute;
+use Session;
 
 class UserControllers extends Controller
 {
@@ -38,12 +39,15 @@ class UserControllers extends Controller
      */
     public function create()
     {
+        if(!Session::has('employeeID')){
+            return redirect('/');
+        }
         // $lctn = new location();
         $locations = location::pluck('location', 'id');
         $employeeType = employee_type::pluck('emp_type', 'id');
-        $companyType = company::pluck('name', 'id');
-        $designation = designation::pluck('designation', 'id');
-        $departments = department::pluck('department', 'id');
+        $companyType = company::pluck('company_name', 'id');
+        $designation = designation::pluck('designation_desc', 'id');
+        $departments = department::pluck('department_name', 'id');
         $sports = sport::pluck('sport_name', 'sport_id');
         $institutes = institute::pluck('institute', 'inst_id');
 
@@ -313,6 +317,10 @@ class UserControllers extends Controller
         To view all the employees
     */
     public function viewall(){
+        if(!Session::has('employeeID')){
+            return redirect('/');
+        }
+
         $user_data = users::all();
         // return $user_data;
         $employees = DB::table('users')
