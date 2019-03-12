@@ -3,6 +3,8 @@ CREATE DATABASE IF NOT EXISTS `tenvicsp_hrms` DEFAULT CHARACTER SET utf8 COLLATE
 USE `tenvicsp_hrms`;
 
 
+
+DROP TABLE IF EXISTS `company`;
 CREATE TABLE `company` (
   `id` int(11) NOT NULL,
   `company_name` varchar(300) NOT NULL,
@@ -31,6 +33,7 @@ INSERT INTO `company` (`id`, `company_name`, `full_time_code`, `part_time_code`,
 -- Table structure for table `department`
 --
 
+DROP TABLE IF EXISTS `department`;
 CREATE TABLE `department` (
   `id` int(11) NOT NULL,
   `department_name` varchar(250) NOT NULL,
@@ -54,6 +57,7 @@ INSERT INTO `department` (`id`, `department_name`, `created_at`, `updated_at`, `
 -- Table structure for table `designation`
 --
 
+DROP TABLE IF EXISTS `designation`;
 CREATE TABLE `designation` (
   `id` int(11) NOT NULL,
   `designation_desc` varchar(150) NOT NULL,
@@ -76,6 +80,7 @@ INSERT INTO `designation` (`id`, `designation_desc`, `created_at`, `updated_at`,
 -- Table structure for table `employee_types`
 --
 
+DROP TABLE IF EXISTS `employee_types`;
 CREATE TABLE `employee_types` (
   `id` int(11) NOT NULL,
   `emp_type` varchar(200) NOT NULL,
@@ -101,6 +106,7 @@ INSERT INTO `employee_types` (`id`, `emp_type`, `display_order`, `created_at`, `
 -- Table structure for table `esi_details`
 --
 
+DROP TABLE IF EXISTS `esi_details`;
 CREATE TABLE `esi_details` (
   `id` int(11) NOT NULL,
   `employeeID` varchar(200) NOT NULL,
@@ -118,6 +124,7 @@ CREATE TABLE `esi_details` (
 -- Table structure for table `institutes`
 --
 
+DROP TABLE IF EXISTS `institutes`;
 CREATE TABLE `institutes` (
   `inst_id` int(11) NOT NULL,
   `institute` varchar(200) NOT NULL,
@@ -140,6 +147,7 @@ INSERT INTO `institutes` (`inst_id`, `institute`, `created_at`, `updated_at`, `s
 -- Table structure for table `leave_quota`
 --
 
+DROP TABLE IF EXISTS `leave_quota`;
 CREATE TABLE `leave_quota` (
   `id` int(11) NOT NULL,
   `employeeID` varchar(150) NOT NULL,
@@ -156,6 +164,7 @@ CREATE TABLE `leave_quota` (
 -- Table structure for table `leave_records`
 --
 
+DROP TABLE IF EXISTS `leave_records`;
 CREATE TABLE `leave_records` (
   `leave_id` int(11) NOT NULL,
   `employeeID` varchar(150) NOT NULL,
@@ -176,6 +185,7 @@ CREATE TABLE `leave_records` (
 -- Table structure for table `leave_types`
 --
 
+DROP TABLE IF EXISTS `leave_types`;
 CREATE TABLE `leave_types` (
   `id` int(11) NOT NULL,
   `leave_desc` varchar(150) NOT NULL,
@@ -199,6 +209,7 @@ INSERT INTO `leave_types` (`id`, `leave_desc`, `created_at`, `updated_at`, `stat
 -- Table structure for table `locations`
 --
 
+DROP TABLE IF EXISTS `locations`;
 CREATE TABLE `locations` (
   `id` int(11) NOT NULL,
   `location` varchar(250) NOT NULL,
@@ -223,6 +234,7 @@ INSERT INTO `locations` (`id`, `location`, `display_order`, `created_at`, `updat
 -- Table structure for table `mi_details`
 --
 
+DROP TABLE IF EXISTS `mi_details`;
 CREATE TABLE `mi_details` (
   `id` int(11) NOT NULL,
   `employeeID` varchar(200) NOT NULL,
@@ -240,6 +252,7 @@ CREATE TABLE `mi_details` (
 -- Table structure for table `pf_details`
 --
 
+DROP TABLE IF EXISTS `pf_details`;
 CREATE TABLE `pf_details` (
   `id` int(11) NOT NULL,
   `employeeID` varchar(200) NOT NULL,
@@ -257,6 +270,7 @@ CREATE TABLE `pf_details` (
 -- Table structure for table `sports`
 --
 
+DROP TABLE IF EXISTS `sports`;
 CREATE TABLE `sports` (
   `sport_id` int(11) NOT NULL,
   `sport_name` varchar(200) NOT NULL,
@@ -281,6 +295,7 @@ INSERT INTO `sports` (`sport_id`, `sport_name`, `created_at`, `updated_at`, `sta
 -- Table structure for table `users`
 --
 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `employeeID` varchar(200) NOT NULL,
   `password` varchar(200) NOT NULL,
@@ -292,12 +307,27 @@ CREATE TABLE `users` (
   `status` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`employeeID`, `password`, `firstname`, `lastname`, `roleID`, `created_at`, `updated_at`, `status`) VALUES
+('AKSP0001', 'tenvic', 's', 's', 1, '2019-03-01 03:54:56', '2019-03-07 18:25:33', 1),
+('AKSP0002', 'tenvic', 's', 's', 1, '2019-03-01 03:55:03', '2019-03-07 18:25:36', 1),
+('TC0001', 'tenvic', 'ss', 's', 1, '2019-03-01 04:51:29', '2019-03-07 18:25:38', 1),
+('TI0001', 'tenvic', 'ss', 's', 1, '2019-03-01 04:51:49', '2019-03-07 18:25:41', 1),
+('TP0001', 'tenvic', 'ss', 's', 1, '2019-03-01 04:51:16', '2019-03-07 18:25:43', 1),
+('TR0001', 'tenvic', 'ss', 's', 1, '2019-03-01 04:52:28', '2019-03-07 18:25:46', 1),
+('TS0001', 'tenvic', 's', 's', 1, '2019-03-01 04:50:33', '2019-03-07 18:25:48', 1),
+('TS0002', 'tenvic', 'ss', 's', 1, '2019-03-01 04:51:00', '2019-03-07 18:25:50', 1);
+
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `user_details`
 --
 
+DROP TABLE IF EXISTS `user_details`;
 CREATE TABLE `user_details` (
   `__id` int(11) NOT NULL,
   `employeeID` varchar(200) NOT NULL,
@@ -353,6 +383,20 @@ CREATE TABLE `user_details` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `user_details`
+--
+
+INSERT INTO `user_details` (`__id`, `employeeID`, `company`, `employee_type`, `designation`, `level`, `department`, `project_division`, `managerID`, `doj`, `exit_date`, `contract_from`, `contract_to`, `exit_remarks`, `school_academy`, `sport`, `location`, `mobile_no`, `emergency_contact_person`, `emergency_contact_number`, `official_email`, `personal_email`, `dob`, `gender`, `blood_group`, `maritial_status`, `educational_qualification`, `educational_qualification_details`, `sports_certification`, `experience_previous`, `pan_number`, `aadhar_number`, `uan`, `esic_number`, `passport_number`, `salary_ac`, `personal_ac`, `salary`, `gst`, `father_name`, `mother_name`, `pf_nominee_relation`, `pf_nominee_name`, `pf_nominee_dob`, `pf_nominee_aadhar`, `esi_nominee_relation`, `esi_nominee_name`, `esi_nominee_dob`, `esi_nominee_aadhar`, `present_address`, `permanent_address`, `created_at`, `updated_at`) VALUES
+(1, 'AKSP0001', 1, 1, 1, 2, 3, NULL, 'AKSP0002', '2000-01-01', NULL, NULL, NULL, NULL, NULL, NULL, 1, 8787878788, 'jbkyu', 789698, 'dasljnliu', 'hbkyblh', '2000-01-01', 'Male', 'O+', 'Single', 'PG', NULL, NULL, NULL, 'kyngi', 'yg iy', NULL, NULL, 'g iyggomh', '6897698769876', '76978698', 8769786986, '9769786987', 's', 's', 'n', 'n', '2000-01-01', 'n', 'e', 'e', '2000-01-01', 'e', 'adfZ', 'bbhlbh', '2019-03-01 03:54:56', '2019-03-01 03:54:56'),
+(2, 'AKSP0002', 1, 1, 1, 2, 3, NULL, '', '2000-01-01', NULL, NULL, NULL, NULL, NULL, NULL, 1, 8787878788, 'jbkyu', 789698, 'dasljnliu', 'hbkyblh', '2000-01-01', 'Male', 'O+', 'Single', 'PG', NULL, NULL, NULL, 'kyngi', 'yg iy', NULL, NULL, 'g iyggomh', '6897698769876', '76978698', 8769786986, '9769786987', 's', 's', 'n', 'n', '2000-01-01', 'n', 'e', 'e', '2000-01-01', 'e', 'adfZ', 'bbhlbh', '2019-03-01 03:55:03', '2019-03-01 03:55:03'),
+(3, 'TS0001', 2, 1, 1, 2, 3, NULL, '', '2000-01-01', NULL, NULL, NULL, NULL, NULL, NULL, 1, 9898989898, 'liuhi', 8769876876, 'lmuhnyigm', 'jkygukyuyj', '2000-01-01', 'Male', 'O+', 'Single', 'PG', NULL, NULL, NULL, 'uo7yo9h', '9n7y7', NULL, NULL, 'noiuhoy9y', '87098', '98790709', 7097987, '098709798', 's', 's', 'n', 'n', '2000-01-01', 'n', 'e', 'e', '2000-02-02', 'sws', 'jhby', 'ii', '2019-03-01 04:50:33', '2019-03-01 04:50:33'),
+(4, 'TS0002', 2, 1, 1, 2, 3, NULL, '', '2000-01-01', NULL, NULL, NULL, NULL, NULL, NULL, 1, 9898989898, 'liuhi', 8769876876, 'lmuhnyigm', 'jkygukyuyj', '2000-01-01', 'Male', 'O+', 'Single', 'PG', NULL, NULL, NULL, 'uo7yo9h', '9n7y7', NULL, NULL, 'noiuhoy9y', '87098', '98790709', 7097987, '098709798', 's', 's', 'n', 'n', '2000-01-01', 'n', 'e', 'e', '2000-02-02', 'sws', 'jhby', 'ii', '2019-03-01 04:51:00', '2019-03-01 04:51:00'),
+(5, 'TP0001', 2, 2, 1, 2, 3, NULL, '', '2000-01-01', NULL, NULL, NULL, NULL, NULL, NULL, 1, 9898989898, 'liuhi', 8769876876, 'lmuhnyigm', 'jkygukyuyj', '2000-01-01', 'Male', 'O+', 'Single', 'PG', NULL, NULL, NULL, 'uo7yo9h', '9n7y7', NULL, NULL, 'noiuhoy9y', '87098', '98790709', 7097987, '098709798', 's', 's', 'n', 'n', '2000-01-01', 'n', 'e', 'e', '2000-02-02', 'sws', 'jhby', 'ii', '2019-03-01 04:51:16', '2019-03-01 04:51:16'),
+(6, 'TC0001', 2, 3, 1, 2, 3, NULL, '', '2000-01-01', NULL, NULL, NULL, NULL, NULL, NULL, 1, 9898989898, 'liuhi', 8769876876, 'lmuhnyigm', 'jkygukyuyj', '2000-01-01', 'Male', 'O+', 'Single', 'PG', NULL, NULL, NULL, 'uo7yo9h', '9n7y7', NULL, NULL, 'noiuhoy9y', '87098', '98790709', 7097987, '098709798', 's', 's', 'n', 'n', '2000-01-01', 'n', 'e', 'e', '2000-02-02', 'sws', 'jhby', 'ii', '2019-03-01 04:51:29', '2019-03-01 04:51:29'),
+(7, 'TI0001', 2, 4, 1, 2, 3, NULL, '', '2000-01-01', NULL, NULL, NULL, NULL, NULL, NULL, 1, 9898989898, 'liuhi', 8769876876, 'lmuhnyigm', 'jkygukyuyj', '2000-01-01', 'Male', 'O+', 'Single', 'PG', NULL, NULL, NULL, 'uo7yo9h', '9n7y7', NULL, NULL, 'noiuhoy9y', '87098', '98790709', 7097987, '098709798', 's', 's', 'n', 'n', '2000-01-01', 'n', 'e', 'e', '2000-02-02', 'sws', 'jhby', 'ii', '2019-03-01 04:51:49', '2019-03-01 04:51:49'),
+(8, 'TR0001', 3, 1, 1, 2, 3, NULL, '', '2000-01-01', NULL, NULL, NULL, NULL, NULL, NULL, 1, 9898989898, 'liuhi', 8769876876, 'lmuhnyigm', 'jkygukyuyj', '2000-01-01', 'Male', 'O+', 'Single', 'PG', NULL, NULL, NULL, 'uo7yo9h', '9n7y7', NULL, NULL, 'noiuhoy9y', '87098', '98790709', 7097987, '098709798', 's', 's', 'n', 'n', '2000-01-01', 'n', 'e', 'e', '2000-02-02', 'sws', 'jhby', 'ii', '2019-03-01 04:52:28', '2019-03-01 04:52:28');
 
 --
 -- Indexes for dumped tables
@@ -583,6 +627,3 @@ ALTER TABLE `user_details`
   ADD CONSTRAINT `user_details_ibfk_1` FOREIGN KEY (`employeeID`) REFERENCES `users` (`employeeID`);
 COMMIT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
