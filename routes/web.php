@@ -37,5 +37,16 @@ Route::post('/leave/request', [
 	'uses' => 'leaveController@request',
 	'as' => 'request'
 ]);
+
+// Route::post('/leave/approved', function(){
+// 	if(Request::ajax()){
+// 		// return 'Got the request';
+// 		return Response::json(Request::all());
+// 	}
+
+// });
+Route::post('/leave/approved', 'leaveController@approve_leave');
+Route::post('/leave/reject', 'leaveController@reject_leave');
+
 Route::get('/leave/approve', 'leaveController@approve');
 

@@ -43,7 +43,7 @@
                     <div class="form-group">
                       <!-- <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password"> -->
                       {{ Form::label('password', 'Password') }}
-                      {{ Form::text('password', '', ['class' => 'form-control']) }}
+                      {{ Form::password('password', ['class' => 'form-control']) }}
                     </div>
                     <hr>
                    <!--  <div class="form-group">

@@ -61,7 +61,7 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Manage Leave:</h6>
             <a class="collapse-item" href="/leave/request">Request Leave</a>
-            <a class="collapse-item" href="/leave/approve">Approve Leave</a>
+            <a class="collapse-item" href="/leave/approve">Review Leave</a>
           </div>
         </div>
       </li>

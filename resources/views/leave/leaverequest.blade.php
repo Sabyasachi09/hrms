@@ -12,7 +12,7 @@
 				
 				<div class="form-group col-9">
 					{{ Form::label('leaveType', 'Leave Type') }}
-					{{ Form::select('leaveType', $leaveType, null, ['class' => 'form-control', 'placeholder' => 'Select Leave Type']) }}
+					{{ Form::select('leaveType', $leaveType, null, ['class' => 'form-control', 'placeholder' => 'Select Leave Type', 'onchange' => 'LeaveType()']) }}
 				</div>
 			</div>
 			<div class="col">
@@ -74,10 +74,22 @@
 			$('#Lfrom').css('display', 'block');
 			$('#Lto').css('display', 'none');
 		}
-		else{
+		else if(NumOfdays == '2'){
 			$('#leaveFromLabel').text('From');
 			$('#Lfrom').css('display', 'block');
 			$('#Lto').css('display', 'block');
+		}
+	}
+
+	function LeaveType(){
+		// var Leavetype = $("#leaveType").val();
+		if($("#leaveType").val() == '3'){
+			$("#numOfDays option:contains(\'More than a day\')").attr("disabled","disabled");
+			 $("#numOfDays option[value='1']").prop('selected',true);
+			 NumberOfDays();
+		}
+		else{
+			$("#numOfDays option:contains(\'More than a day\')").prop("disabled", false);
 		}
 	}
 

@@ -33,7 +33,7 @@ class leaveController extends Controller
 
                 $addLeaveRequest->employeeID = $request->input('employeeID');
                 $ManagerID = $UserDetails->where('employeeID', $request->input('employeeID'))->value('managerID');
-                
+
                 $addLeaveRequest->managerID = $ManagerID;
                 $addLeaveRequest->leave_type = $request->input('leaveType');
                 $NumOfDays = $request->input('numberOfLeave');
@@ -81,16 +81,51 @@ class leaveController extends Controller
     public function approve(){
 
     	if(Session::has('employeeID')){
-    	   return view('leave.leaveapprove')->with(['employeeID' => Session::get('employeeID')]);
+            $leaveRecord = new leave_record();
+            $RequestedLeave = $leaveRecord
+             ->leftJoin('leave_types', 'leave_records.leave_type', '=', 'leave_types.id')
+             ->leftJoin('users', 'leave_records.employeeID', '=', 'users.employeeID')
+             ->where('managerID', Session::get('employeeID'))
+                ->where('leave_status', '=', '1')->get();
+            return view('leave.leaveapprove')->with(['employeeID' => Session::get('employeeID'), 'RequestedLeave' => $RequestedLeave]);
         }
         else{
             return view('navigation.login');
         }
     }
 
-    public function GetManager($employeeID, $department){
+    public function approve_leave(Request $request){
+        $leaveID = $request->id;
+        $leaveRecord = new leave_record();
+        $leaveStatus = 2;
+        try{
+            $leaveRecord
+            ->where('leave_id', $leaveID)
+            ->update(['leave_status' => $leaveStatus]);
+        return response()->json(['success'=>'Got Simple Ajax Request.']);
+            // return ('Leave approved');
+        }
+        catch(\Illuminate\Database\QueryException $e){
+            //  $e->getMessage();
+            // return redirect('/leave/request')->with('error','Request could not be initiated, please try again.');
+        }
 
+    }
 
+    public function reject_leave(Request $request){
+        $leaveID = $request->id;
+        $leaveRecord = new leave_record();
+        $leaveStatus = 3;
+        try{
+            $leaveRecord
+            ->where('leave_id', $leaveID)
+            ->update(['leave_status' => $leaveStatus]);
+        return response()->json(['success'=>'Got Simple Ajax Request.']);
+        }
+        catch(\Illuminate\Database\QueryException $e){
+            //  $e->getMessage();
+            // return redirect('/leave/request')->with('error','Request could not be initiated, please try again.');
+        }
     }
 
 }
