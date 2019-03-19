@@ -8,6 +8,7 @@ use App\user_detail;
 use App\leave_type;
 use App\leave_record;
 use App\leave_quota;
+use App\lop_record;
 use Session;
 use DateTime;
 class leaveController extends Controller
@@ -112,103 +113,166 @@ class leaveController extends Controller
             // Deduction from Comp Off quota
             if($TotalLeave > $Comp_Quota){
                 $DeductionFromCompOff = (($TotalLeave + $Comp_Quota) - $TotalLeave);
-                $CurrentTotalLeave = ($TotalLeave - $DeductionFromCompOff);
                 
-                // Update comp_quota column
+                // Update comp_quota 
+                try{
+                    $leaveQuota
+                    ->where('employeeID', $employeeID)
+                    ->decrement('comp_quota', $DeductionFromCompOff);
+                    $CurrentTotalLeave = ($TotalLeave - $DeductionFromCompOff);
+                }
+                catch(\Illuminate\Database\QueryException $e){
+                    //  $e->getMessage();
+                    return redirect('/user')->with('error', 'Employee could not be added.');
+                }
 
                 // Deduction from casual quota
                 if($CurrentTotalLeave > $Casual_Quota){
-                    $DeductionFromCasualQuota = ( ($CurrentTotalLeave + $Casual_Quota) - $CurrentTotalLeave);
-                    $CurrentTotalLeave = ($CurrentTotalLeave - $DeductionFromCasualQuota);
+
+                    $DeductionFromCasualQuota = (($CurrentTotalLeave + $Casual_Quota) - $CurrentTotalLeave);
+
                     // Update casual quota 
-
+                    try{
+                        $leaveQuota
+                        ->where('employeeID', $employeeID)
+                        ->decrement('casual_quota', $DeductionFromCasualQuota);
+                         $CurrentTotalLeave = ($CurrentTotalLeave - $DeductionFromCasualQuota);
+                    }
+                    catch(\Illuminate\Database\QueryException $e){
+                        //  $e->getMessage();
+                        return redirect('/user')->with('error', 'Employee could not be added.');
+                    }
                     
+                    // If number of leave is more than earned quota
                     if($CurrentTotalLeave > $Earned_Quota){
-                        $DeductionFromEarnedQuota = ( ($CurrentTotalLeave + $Earned_Quota) - $CurrentTotalLeave);
-                        $CurrentTotalLeave = ($CurrentTotalLeave - $DeductionFromEarnedQuota);
 
+                        $DeductionFromEarnedQuota = (($CurrentTotalLeave + $Earned_Quota) - $CurrentTotalLeave);
+                        // Update earned quota
+                        try{
+                            $leaveQuota
+                            ->where('employeeID', $employeeID)
+                            ->decrement('earned_quota', $DeductionFromEarnedQuota);
+                            $CurrentTotalLeave = ($CurrentTotalLeave - $DeductionFromEarnedQuota);
+                        }
+                        catch(\Illuminate\Database\QueryException $e){
+                            //  $e->getMessage();
+                            return redirect('/user')->with('error', 'Employee could not be added.');
+                        }
 
+                        // Record loss of pay 
+                        $lossOfPay = new lop_record();
+                        $lossOfPay->employeeID = $employeeID;
+                        $lossOfPay->lop = $CurrentTotalLeave;
+                        try{
+                            $lossOfPay->save();
+                        }
+                        catch(\Illuminate\Database\QueryException $e){
+                            //  $e->getMessage();
+                            return redirect('/user')->with('error', 'Employee could not be added.');
+                        }
 
                     }
+                    // If number of leave is less than earned quota 
                     elseif ($CurrentTotalLeave < $Earned_Quota) {
                         $DeductionFromEarnedQuota = ($Earned_Quota - $CurrentTotalLeave);
+                        try{
+                            $leaveQuota
+                            ->where('employeeID', $employeeID)
+                            ->decrement('earned_quota', $DeductionFromEarnedQuota);
+                        }
+                        catch(\Illuminate\Database\QueryException $e){
+                            //  $e->getMessage();
+                            return redirect('/user')->with('error', 'Employee could not be added.');
+                        }
                     }
+                    // If number of leave is equal to earned quota
                     elseif ($CurrentTotalLeave == $Earned_Quota) {
                         $DeductionFromEarnedQuota = $Earned_Quota;
+                        try{
+                            $leaveQuota
+                            ->where('employeeID', $employeeID)
+                            ->decrement('earned_quota', $DeductionFromEarnedQuota);
+                        }
+                        catch(\Illuminate\Database\QueryException $e){
+                            //  $e->getMessage();
+                            return redirect('/user')->with('error', 'Employee could not be added.');
+                        }
                     }
-
                 }
+                // If number of leave is less than casual quota
                 elseif ($CurrentTotalLeave < $Casual_Quota) {
                     $DeductionFromCasualQuota = ($Casual_Quota - $CurrentTotalLeave);
+                    try{
+                        $leaveQuota
+                        ->where('employeeID', $employeeID)
+                        ->decrement('casual_quota', $DeductionFromCasualQuota);
+                    }
+                    catch(\Illuminate\Database\QueryException $e){
+                        //  $e->getMessage();
+                        return redirect('/user')->with('error', 'Employee could not be added.');
+                    }
                 }
+                // If number of leave is equal to casual quota
                 elseif ($CurrentTotalLeave == $Casual_Quota) {
                     $DeductionFromCasualQuota = $Casual_Quota;
+                    try{
+                        $leaveQuota
+                        ->where('employeeID', $employeeID)
+                        ->decrement('casual_quota', $DeductionFromCasualQuota);
+                    }
+                    catch(\Illuminate\Database\QueryException $e){
+                        //  $e->getMessage();
+                        return redirect('/user')->with('error', 'Employee could not be added.');
+                    }
                 }
-
             }
+            // If number of leave is less than comp off
             elseif ($TotalLeave < $Comp_Quota) {
-                $DeductionFromCompOff = ( $Comp_Quota - $TotalLeave );                
+                $DeductionFromCompOff = ($Comp_Quota - $TotalLeave);  
+                try{
+                    $leaveQuota
+                    ->where('employeeID', $employeeID)
+                    ->decrement('comp_quota', $DeductionFromCompOff);
+                }
+                catch(\Illuminate\Database\QueryException $e){
+                    //  $e->getMessage();
+                    return redirect('/user')->with('error', 'Employee could not be added.');
+                }              
             }
+            // If number of leave is equal to comp off
             elseif ( $TotalLeave == $Comp_Quota ) {
                 $DeductionFromCompOff = $Comp_Quota;
+                try{
+                    $leaveQuota
+                    ->where('employeeID', $employeeID)
+                    ->decrement('comp_quota', $DeductionFromCompOff);
+                }
+                catch(\Illuminate\Database\QueryException $e){
+                    //  $e->getMessage();
+                    return redirect('/user')->with('error', 'Employee could not be added.');
+                }         
             }
 
-            if($Comp_Quota == 2){
-                return json_encode($Comp_Quota);
+            $leaveStatus = 2;
+            try{
+                $leaveRecord
+                ->where('leave_id', $leaveID)
+                ->update(['leave_status' => $leaveStatus]);
+            return response()->json(['success'=>'Got Simple Ajax Request.']);
+                // return ('Leave approved');
             }
-            else{
-                return json_encode($LeaveStatus);
+            catch(\Illuminate\Database\QueryException $e){
+                //  $e->getMessage();
+                // return redirect('/leave/request')->with('error','Request could not be initiated, please try again.');
             }
 
-            // var_dump($LeaveStatus);
+            // if($Comp_Quota == 2){
+            //     return json_encode($Comp_Quota);
+            // }
+            // else{
+            //     return json_encode($LeaveStatus);
+            // }
         }
-
-        // if(count($LeaveStatus) > 0){
-        //     $Comp_Quota = $LeaveStatus->comp_quota;
-        //     $Casual_Quota = $LeaveStatus->casual_quota;
-        //     $Earned_Quota = $LeaveStatus->earned_quota;
-
-        //     $leaveStatus = 2;
-        //     try{
-        //         $leaveRecord
-        //         ->where('leave_id', $leaveID)
-        //         ->update(['leave_status' => $leaveStatus]);
-        //     return response()->json(['success'=>'Got Simple Ajax Request.']);
-        //         // return ('Leave approved');
-        //     }
-        //     catch(\Illuminate\Database\QueryException $e){
-        //         //  $e->getMessage();
-        //         // return redirect('/leave/request')->with('error','Request could not be initiated, please try again.');
-        //     }
-
-        // }
-
-        // if($Comp_Quota > 0 ){
-        //     try{
-        //         $leaveQuota
-        //         ->where('employeeID', $employeeID)
-        //         ->update(['comp_quota' => ($Comp_Quota-1) ]);
-        //     }
-        //     catch(\Illuminate\Database\QueryException $e){
-        //         //  $e->getMessage();
-        //         // return redirect('/leave/request')->with('error','Request could not be initiated, please try again.');
-        //     }
-
-        // }
-
-        // $leaveStatus = 2;
-        // try{
-        //     $leaveRecord
-        //     ->where('leave_id', $leaveID)
-        //     ->update(['leave_status' => $leaveStatus]);
-        // return response()->json(['success'=>'Got Simple Ajax Request.']);
-        //     // return ('Leave approved');
-        // }
-        // catch(\Illuminate\Database\QueryException $e){
-        //     //  $e->getMessage();
-        //     // return redirect('/leave/request')->with('error','Request could not be initiated, please try again.');
-        // }
-
     }
 
     public function reject_leave(Request $request){

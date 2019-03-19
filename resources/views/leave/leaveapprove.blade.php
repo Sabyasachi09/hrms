@@ -80,22 +80,18 @@
 				url: '/leave/approved',
 				// dataType: "json",
 				data: {id:id, employeeid:employeeid, leave:leave},
-				// data: {
-				// 	id : id,
-				// 	_token:     '{{ csrf_token() }}'
-				// },
 				success: function(data){
 					// var obj = jQuery.parseJSON(data);
 					// alert(obj[0]);
 					// var d = JSON.parse(data);
 					// alert(data[0].earned_quota);
-					var Data = $.parseJSON(data);
-					// alert(Data);
-					for (var i in Data){
-						alert(Data[i].earned_quota);
-						alert(Data[i].casual_quota);
-						alert(Data[i].comp_quota);
-					}
+					// var Data = $.parseJSON(data);
+					// // alert(Data);
+					// for (var i in Data){
+					// 	alert(Data[i].earned_quota);
+					// 	alert(Data[i].casual_quota);
+					// 	alert(Data[i].comp_quota);
+					// }
 					$('#'+id).fadeOut();
 				},
 				error: function(){
