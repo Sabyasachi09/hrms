@@ -49,8 +49,8 @@
 	                		@else
 	                			<td>{{ $employee-> number_of_leave }} days, from {{ $employee-> leave_from }} to {{ $employee-> leave_to }}</td>
 	                		@endif
-	                		<td><center><a onclick="Approve('{{  $employee-> leave_id }}')" class="btn btn-success" style="color:white;">Approve</a></center></td>
-	                		<td><center><a onclick="Reject('{{  $employee-> leave_id }}')" class="btn btn-danger" style="color:white;">Reject</a></center></td>
+	                		<td><center><a onclick="Approve('{{  $employee-> leave_id }}', '{{ $employee-> employeeID}}', '{{ $employee->number_of_leave }}')" class="btn btn-success" style="color:white;">Approve</a></center></td>
+	                		<td><center><a onclick="Reject('{{  $employee-> leave_id }}','{{ $employee-> employeeID }}')" class="btn btn-danger" style="color:white;">Reject</a></center></td>
 	                	</tr>
 	                @endforeach
 	              </tbody>
@@ -67,25 +67,35 @@
 <script src="{{ asset('/js/jquery.min.js') }}"></script>
 <script type="text/javascript" >
 
-	function Approve(id){
+	function Approve(id, employeeid, leave){
 		$.ajaxSetup({
         	headers: {
             	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         	}
     	});
-		var sure = confirm('Approve the leave for '+id);
+		var sure = confirm('Approve the leave for '+id+', empID '+employeeid+', for '+leave+' days');
 		if(sure){
 			$.ajax({
 				type: 'POST',
 				url: '/leave/approved',
-				dataType: "json",
-				data: {id:id},
+				// dataType: "json",
+				data: {id:id, employeeid:employeeid, leave:leave},
 				// data: {
 				// 	id : id,
 				// 	_token:     '{{ csrf_token() }}'
 				// },
 				success: function(data){
-					alert(data);
+					// var obj = jQuery.parseJSON(data);
+					// alert(obj[0]);
+					// var d = JSON.parse(data);
+					// alert(data[0].earned_quota);
+					var Data = $.parseJSON(data);
+					// alert(Data);
+					for (var i in Data){
+						alert(Data[i].earned_quota);
+						alert(Data[i].casual_quota);
+						alert(Data[i].comp_quota);
+					}
 					$('#'+id).fadeOut();
 				},
 				error: function(){
@@ -97,19 +107,19 @@
 	}
 	
 
-	function Reject(id){
+	function Reject(id, employeeid){
 		$.ajaxSetup({
         	headers: {
             	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         	}
     	});
-		var sure = confirm('Reject leave for '+id);
+		var sure = confirm('Reject leave for '+id+', empID '+employeeid);
 		if(sure){
 			$.ajax({
 				type: 'POST',
 				url: '/leave/reject',
 				dataType: "json",
-				data: {id:id},
+				data: {id:id, employeeid:employeeid},
 				success: function(data){
 					alert(data);
 					$('#'+id).fadeOut();

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\user_detail;
 use App\leave_type;
 use App\leave_record;
+use App\leave_quota;
 use Session;
 use DateTime;
 class leaveController extends Controller
@@ -96,25 +97,126 @@ class leaveController extends Controller
 
     public function approve_leave(Request $request){
         $leaveID = $request->id;
+        $employeeID = $request->employeeid;
+        $TotalLeave = $request->leave;
         $leaveRecord = new leave_record();
-        $leaveStatus = 2;
-        try{
-            $leaveRecord
-            ->where('leave_id', $leaveID)
-            ->update(['leave_status' => $leaveStatus]);
-        return response()->json(['success'=>'Got Simple Ajax Request.']);
-            // return ('Leave approved');
+        $leaveQuota = new leave_quota();   
+        $LeaveStatus = DB::table('leave_quota')->where('employeeID', '=', $employeeID)->get();
+        if($LeaveStatus){
+            foreach ($LeaveStatus as $Lvalue) {
+                $Comp_Quota = $Lvalue->comp_quota;
+                $Casual_Quota = $Lvalue->casual_quota;
+                $Earned_Quota = $Lvalue->earned_quota;
+            }
+
+            // Deduction from Comp Off quota
+            if($TotalLeave > $Comp_Quota){
+                $DeductionFromCompOff = (($TotalLeave + $Comp_Quota) - $TotalLeave);
+                $CurrentTotalLeave = ($TotalLeave - $DeductionFromCompOff);
+                
+                // Update comp_quota column
+
+                // Deduction from casual quota
+                if($CurrentTotalLeave > $Casual_Quota){
+                    $DeductionFromCasualQuota = ( ($CurrentTotalLeave + $Casual_Quota) - $CurrentTotalLeave);
+                    $CurrentTotalLeave = ($CurrentTotalLeave - $DeductionFromCasualQuota);
+                    // Update casual quota 
+
+                    
+                    if($CurrentTotalLeave > $Earned_Quota){
+                        $DeductionFromEarnedQuota = ( ($CurrentTotalLeave + $Earned_Quota) - $CurrentTotalLeave);
+                        $CurrentTotalLeave = ($CurrentTotalLeave - $DeductionFromEarnedQuota);
+
+
+
+                    }
+                    elseif ($CurrentTotalLeave < $Earned_Quota) {
+                        $DeductionFromEarnedQuota = ($Earned_Quota - $CurrentTotalLeave);
+                    }
+                    elseif ($CurrentTotalLeave == $Earned_Quota) {
+                        $DeductionFromEarnedQuota = $Earned_Quota;
+                    }
+
+                }
+                elseif ($CurrentTotalLeave < $Casual_Quota) {
+                    $DeductionFromCasualQuota = ($Casual_Quota - $CurrentTotalLeave);
+                }
+                elseif ($CurrentTotalLeave == $Casual_Quota) {
+                    $DeductionFromCasualQuota = $Casual_Quota;
+                }
+
+            }
+            elseif ($TotalLeave < $Comp_Quota) {
+                $DeductionFromCompOff = ( $Comp_Quota - $TotalLeave );                
+            }
+            elseif ( $TotalLeave == $Comp_Quota ) {
+                $DeductionFromCompOff = $Comp_Quota;
+            }
+
+            if($Comp_Quota == 2){
+                return json_encode($Comp_Quota);
+            }
+            else{
+                return json_encode($LeaveStatus);
+            }
+
+            // var_dump($LeaveStatus);
         }
-        catch(\Illuminate\Database\QueryException $e){
-            //  $e->getMessage();
-            // return redirect('/leave/request')->with('error','Request could not be initiated, please try again.');
-        }
+
+        // if(count($LeaveStatus) > 0){
+        //     $Comp_Quota = $LeaveStatus->comp_quota;
+        //     $Casual_Quota = $LeaveStatus->casual_quota;
+        //     $Earned_Quota = $LeaveStatus->earned_quota;
+
+        //     $leaveStatus = 2;
+        //     try{
+        //         $leaveRecord
+        //         ->where('leave_id', $leaveID)
+        //         ->update(['leave_status' => $leaveStatus]);
+        //     return response()->json(['success'=>'Got Simple Ajax Request.']);
+        //         // return ('Leave approved');
+        //     }
+        //     catch(\Illuminate\Database\QueryException $e){
+        //         //  $e->getMessage();
+        //         // return redirect('/leave/request')->with('error','Request could not be initiated, please try again.');
+        //     }
+
+        // }
+
+        // if($Comp_Quota > 0 ){
+        //     try{
+        //         $leaveQuota
+        //         ->where('employeeID', $employeeID)
+        //         ->update(['comp_quota' => ($Comp_Quota-1) ]);
+        //     }
+        //     catch(\Illuminate\Database\QueryException $e){
+        //         //  $e->getMessage();
+        //         // return redirect('/leave/request')->with('error','Request could not be initiated, please try again.');
+        //     }
+
+        // }
+
+        // $leaveStatus = 2;
+        // try{
+        //     $leaveRecord
+        //     ->where('leave_id', $leaveID)
+        //     ->update(['leave_status' => $leaveStatus]);
+        // return response()->json(['success'=>'Got Simple Ajax Request.']);
+        //     // return ('Leave approved');
+        // }
+        // catch(\Illuminate\Database\QueryException $e){
+        //     //  $e->getMessage();
+        //     // return redirect('/leave/request')->with('error','Request could not be initiated, please try again.');
+        // }
 
     }
 
     public function reject_leave(Request $request){
         $leaveID = $request->id;
+        $employeeID = $request->employeeid;
         $leaveRecord = new leave_record();
+        $leaveQuota = new leave_quota();   
+        // $LeaveStatus = $leaveQuota->where('employeeID', '=', $employeeID)->get();
         $leaveStatus = 3;
         try{
             $leaveRecord

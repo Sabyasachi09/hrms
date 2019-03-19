@@ -17,6 +17,7 @@ use App\designation;
 use App\department;
 use App\sport;
 use App\institute;
+use App\leave_quota;
 use Session;
 
 class UserControllers extends Controller
@@ -157,6 +158,7 @@ class UserControllers extends Controller
         $createUser->employeeID=$employeeid;
         $createUser->firstname=$request->input('firstname');
         $createUser->lastname=$request->input('lastname');
+        $createUser->password= 'tenvic';
         
         $user_details->employeeID=$employeeid;
         $user_details->company=$request->input('company');
@@ -297,6 +299,55 @@ class UserControllers extends Controller
                 users::where('employeeID', $employeeid)->delete();
                 return redirect('/user')->with('error', 'Employee could not be added.');
             }
+
+            // Earned leave calculation
+            $Month = date('m');
+            $Day = date('d');
+
+            $q1 = 3.5;
+            $q2 = 4;
+            $q3 = 3.5;
+            $q4 = 4;
+
+            if($Month <= 3 ){
+                $earned_quota = ($q1+$q2+$q3+$q4);
+            }
+            elseif($Month > 3 && $Month <= 6){
+                $earned_quota = ($q2+$q3+$q4);
+            }
+            elseif($Month > 6 && $Month <= 9){
+                $earned_quota = ($q3+$q4);
+            }
+            elseif($Month > 9 && $Month <= 12){
+                $earned_quota = $q4;
+            }
+            
+            // Casual leave calculation 
+            $TotalCasual_quota = 12;
+            if($Day < 15){
+                $casual_quota = ($TotalCasual_quota - $Month);
+            }
+            elseif($Day > 15){
+                $casual_quota = ($TotalCasual_quota - $Month)-1;   
+            }
+            $leaveQuota = new leave_quota();
+            $leaveQuota->employeeID = $employeeid;
+            $leaveQuota->earned_quota = $earned_quota;
+            $leaveQuota->casual_quota = $casual_quota;
+
+            try{
+                $ifLeaveDetailsRecorded = $leaveQuota->save();
+            }
+            catch(\Illuminate\Database\QueryException $e){
+                //  $e->getMessage();
+                user_detail::where('employeeID', $employeeid)->delete();
+                pf_detail::where('employeeID', $employeeid)->delete();
+                esi_detail::where('employeeID', $employeeid)->delete();
+                mi_detail::where('employeeID', $employeeid)->delete();
+                users::where('employeeID', $employeeid)->delete();
+                return redirect('/user')->with('error', 'Employee could not be added.');
+            }
+
 
             return redirect('/user')->with('success', 'Employee Added.');
     }
