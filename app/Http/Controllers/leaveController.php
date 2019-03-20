@@ -123,7 +123,6 @@ class leaveController extends Controller
                 }
                 catch(\Illuminate\Database\QueryException $e){
                     //  $e->getMessage();
-                    return redirect('/user')->with('error', 'Employee could not be added.');
                 }
 
                 // Deduction from casual quota
@@ -140,7 +139,6 @@ class leaveController extends Controller
                     }
                     catch(\Illuminate\Database\QueryException $e){
                         //  $e->getMessage();
-                        return redirect('/user')->with('error', 'Employee could not be added.');
                     }
                     
                     // If number of leave is more than earned quota
@@ -156,7 +154,6 @@ class leaveController extends Controller
                         }
                         catch(\Illuminate\Database\QueryException $e){
                             //  $e->getMessage();
-                            return redirect('/user')->with('error', 'Employee could not be added.');
                         }
 
                         // Record loss of pay 
@@ -168,7 +165,6 @@ class leaveController extends Controller
                         }
                         catch(\Illuminate\Database\QueryException $e){
                             //  $e->getMessage();
-                            return redirect('/user')->with('error', 'Employee could not be added.');
                         }
 
                     }
@@ -182,7 +178,6 @@ class leaveController extends Controller
                         }
                         catch(\Illuminate\Database\QueryException $e){
                             //  $e->getMessage();
-                            return redirect('/user')->with('error', 'Employee could not be added.');
                         }
                     }
                     // If number of leave is equal to earned quota
@@ -195,7 +190,6 @@ class leaveController extends Controller
                         }
                         catch(\Illuminate\Database\QueryException $e){
                             //  $e->getMessage();
-                            return redirect('/user')->with('error', 'Employee could not be added.');
                         }
                     }
                 }
@@ -209,7 +203,6 @@ class leaveController extends Controller
                     }
                     catch(\Illuminate\Database\QueryException $e){
                         //  $e->getMessage();
-                        return redirect('/user')->with('error', 'Employee could not be added.');
                     }
                 }
                 // If number of leave is equal to casual quota
@@ -222,7 +215,6 @@ class leaveController extends Controller
                     }
                     catch(\Illuminate\Database\QueryException $e){
                         //  $e->getMessage();
-                        return redirect('/user')->with('error', 'Employee could not be added.');
                     }
                 }
             }
@@ -236,7 +228,6 @@ class leaveController extends Controller
                 }
                 catch(\Illuminate\Database\QueryException $e){
                     //  $e->getMessage();
-                    return redirect('/user')->with('error', 'Employee could not be added.');
                 }              
             }
             // If number of leave is equal to comp off
@@ -249,7 +240,7 @@ class leaveController extends Controller
                 }
                 catch(\Illuminate\Database\QueryException $e){
                     //  $e->getMessage();
-                    return redirect('/user')->with('error', 'Employee could not be added.');
+                    
                 }         
             }
 

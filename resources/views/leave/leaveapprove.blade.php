@@ -73,7 +73,7 @@
             	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         	}
     	});
-		var sure = confirm('Approve the leave for '+id+', empID '+employeeid+', for '+leave+' days');
+		var sure = confirm('Approve leave to employee '+employeeid+', for '+leave+' days');
 		if(sure){
 			$.ajax({
 				type: 'POST',
