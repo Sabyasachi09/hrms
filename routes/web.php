@@ -50,3 +50,5 @@ Route::post('/leave/reject', 'leaveController@reject_leave');
 
 Route::get('/leave/approve', 'leaveController@approve');
 
+Route::get('/payroll', 'payrollController@generate');
+

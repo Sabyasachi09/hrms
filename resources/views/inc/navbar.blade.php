@@ -69,6 +69,28 @@
        <!-- Leave End Divider  -->
       <hr class="sidebar-divider">
 
+        <div class="sidebar-heading">
+        Payroll
+        </div>
+
+        <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePayroll" aria-expanded="true" aria-controls="collapsePayroll">
+          <!-- <i class="fas fa-fw fa-cog"></i> -->
+          <i class="fas fa fa-users"></i>
+          <span>Payroll</span>
+        </a>
+        <div id="collapsePayroll" class="collapse" aria-labelledby="headingPayroll" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Manage Payroll:</h6>
+            <a class="collapse-item" href="/payroll">Generate Payslips</a>
+          </div>
+        </div>
+      </li>
+
+       <!-- Leave End Divider  -->
+      <hr class="sidebar-divider">
+
+
       <!-- Heading -->
       <!-- <div class="sidebar-heading">
         Interface
