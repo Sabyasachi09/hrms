@@ -5,20 +5,22 @@
 	<link href="{{ asset('/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" />
 </center>
 <center>
-	<button class="btn btn-primary">Generate Payslips</button>
+	<!-- <a href="/payroll/generate"><button class="btn btn-primary" onclick="/payroll/generate">Generate Payslips</button></a> -->
 </center><br>
 <!-- {{$payRollData}} -->
 
 @foreach($payRollData as $employee)
 	@if($employee->Basic != 0)
-	<?php $LOP=($employee->Pay_Days - $employee->Present_Days);
+	<?php 
 		$TotalEarnings = 0;
 		$TotalBaseEarning = 0;
 		$TotalExtraEarning = 0;
-		$TotalDeducations = 0;
+		$TotalDeductions = 0;
 		$LOPDeduction = 0;
 		$NetPay = 0;
-
+		$currentDayOfMonth=date('t');
+		$LOP=($currentDayOfMonth - $employee->Pay_Days);
+		// $LOP=($employee->Pay_Days - $employee->Present_Days);
 		$TotalBaseEarning = ($employee->Basic + $employee->HRA);
 
 	?>
@@ -41,7 +43,7 @@
 	            		<tr>
 	            			<th>Earnings</th>
 	            			<th>Amount <small>(INR)</small></th>
-	            			<th>Deducation</th>
+	            			<th>Deductions</th>
 	            			<th>Amount <small>(INR)</small></th>
 	            		</tr>
 
@@ -53,7 +55,7 @@
 						<td>{{ $employee->Basic }}</td>
 						<!-- PF Deduction -->
 						@if($employee->PF !=0)
-							<?php $TotalDeducations = ($TotalDeducations + $employee->PF) ;?>
+							<?php $TotalDeductions = ($TotalDeductions + $employee->PF) ;?>
 							<th>PF</th>
 							<td>{{ $employee->PF }}</td>
 						@endif
@@ -64,7 +66,7 @@
 
 						<!-- ESI Deduction -->
 						@if($employee->ESI !=0)
-						<?php $TotalDeducations = ($TotalDeducations + $employee->ESI) ;?>
+						<?php $TotalDeductions = ($TotalDeductions + $employee->ESI) ;?>
 							<th>ESI</th>
 							<td>{{ $employee->ESI }}</td>
 						@endif
@@ -78,7 +80,7 @@
 
 						<!-- PT Deduction -->
 						@if($employee->PT !=0)
-						<?php $TotalDeducations = ($TotalDeducations + $employee->PT) ;?>
+						<?php $TotalDeductions = ($TotalDeductions + $employee->PT) ;?>
 							<th>PT</th>
 							<td>{{ $employee->PT }}</td>
 						@endif
@@ -86,7 +88,7 @@
 					</tr>
 					@else
 						@if($employee->PT !=0)
-						<?php $TotalDeducations = ($TotalDeducations + $employee->PT) ;?>
+						<?php $TotalDeductions = ($TotalDeductions + $employee->PT) ;?>
 						<tr><th></th><td></td>
 							<th>PT</th>
 							<td>{{ $employee->PT }}</td></tr>
@@ -103,14 +105,14 @@
 
 						<!-- TDS Deduction -->
 						@if($employee->TDS !=0)
-						<?php $TotalDeducations = ($TotalDeducations + $employee->TDS) ;?>
+						<?php $TotalDeductions = ($TotalDeductions + $employee->TDS) ;?>
 							<th>TDS</th>
 							<td>{{ $employee->TDS }}</td>
 						@endif
 					</tr>
 					@else
 						@if($employee->TDS !=0)
-						<?php $TotalDeducations = ($TotalDeducations + $employee->TDS) ;?>
+						<?php $TotalDeductions = ($TotalDeductions + $employee->TDS) ;?>
 							<tr><th></th><td></td>
 							<th>TDS</th>
 							<td>{{ $employee->TDS }}</td></tr>
@@ -126,14 +128,14 @@
 
 						<!-- Recoveries Deduction -->
 						@if($employee->Recoveries !=0)
-						<?php $TotalDeducations = ($TotalDeducations + $employee->Recoveries) ;?>
+						<?php $TotalDeductions = ($TotalDeductions + $employee->Recoveries) ;?>
 							<th>Recoveries</th>
 							<td>{{ $employee->Recoveries }}</td>
 						@endif
 					</tr>
 					@else
 						@if($employee->Recoveries !=0)
-						<?php $TotalDeducations = ($TotalDeducations + $employee->Recoveries) ;?>
+						<?php $TotalDeductions = ($TotalDeductions + $employee->Recoveries) ;?>
 							<tr><th></th><td></td>
 							<th>Recoveries</th>
 							<td>{{ $employee->Recoveries }}</td></tr>
@@ -148,7 +150,7 @@
 
 						<!-- Other  Deduction -->
 						@if($employee->Other_Deduction !=0)
-						<?php $TotalDeducations = ($TotalDeducations + $employee->Other_Deduction) ;?>
+						<?php $TotalDeductions = ($TotalDeductions + $employee->Other_Deduction) ;?>
 							<th>Other_Deduction</th>
 							<td>{{ $employee->Other_Deduction }}</td>
 						@endif
@@ -156,7 +158,7 @@
 					</tr>
 					@else
 						@if($employee->Other_Deduction !=0)
-						<?php $TotalDeducations = ($TotalDeducations + $employee->Other_Deduction) ;?>
+						<?php $TotalDeductions = ($TotalDeductions + $employee->Other_Deduction) ;?>
 						<tr><th></th><td></td>
 							<th>Other_Deduction</th>
 							<td>{{ $employee->Other_Deduction }}</td></tr>
@@ -171,7 +173,7 @@
 
 						<!-- Medical_Insurance Deduction -->
 						@if($employee->Medical_Insurance !=0)
-						<?php $TotalDeducations = ($TotalDeducations + $employee->Medical_Insurance) ;?>
+						<?php $TotalDeductions = ($TotalDeductions + $employee->Medical_Insurance) ;?>
 							<th>Medical Insurance</th>
 							<td>{{ $employee->Medical_Insurance }}</td>
 						@endif
@@ -179,7 +181,7 @@
 					</tr>
 					@else
 						@if($employee->Medical_Insurance !=0)
-						<?php $TotalDeducations = ($TotalDeducations + $employee->Medical_Insurance) ;?>
+						<?php $TotalDeductions = ($TotalDeductions + $employee->Medical_Insurance) ;?>
 						<tr><th></th><td></td>
 							<th>Medical Insurance</th>
 							<td>{{ $employee->Medical_Insurance }}</td></tr>
@@ -194,7 +196,7 @@
 
 						<!-- Loan_Recovery Deduction -->
 						@if($employee->Loan_Recovery !=0)
-						<?php $TotalDeducations = ($TotalDeducations + $employee->Loan_Recovery) ;?>
+						<?php $TotalDeductions = ($TotalDeductions + $employee->Loan_Recovery) ;?>
 							<th>Loan Recovery</th>
 							<td>{{ $employee->Loan_Recovery }}</td>
 						@endif
@@ -202,7 +204,7 @@
 					</tr>
 					@else
 						@if($employee->Loan_Recovery !=0)
-						<?php $TotalDeducations = ($TotalDeducations + $employee->Loan_Recovery) ;?>
+						<?php $TotalDeductions = ($TotalDeductions + $employee->Loan_Recovery) ;?>
 							<tr><th></th><td></td>
 							<th>Loan Recovery</th>
 							<td>{{ $employee->Loan_Recovery }}</td></tr>
@@ -246,7 +248,7 @@
 						<td colspan="4" class="text-info"> Total Extra Earnings <span style="float: right;"><small> INR </small>{{ $TotalExtraEarning }}</span></td>
 					</tr>
 					<tr>
-						<td colspan="4" class="text-warning"> Total Deductions <span style="float: right;"><small> INR </small>{{ $TotalDeducations }}</span></td>
+						<td colspan="4" class="text-warning"> Total Deductions <span style="float: right;"><small> INR </small>{{ $TotalDeductions }}</span></td>
 					</tr>
 					@if($LOP !=0)
 					<?php 
@@ -254,11 +256,11 @@
 						$LOPDeduction = round(($PayPerDay * $LOP));
 					?>
 					<tr>
-						<td colspan="4" class="text-danger"> Loss of Pay  <span style="float: right;"><small> INR </small>{{$LOPDeduction}} ( {{ $LOP }} Day/s)</span> </td>
+						<td colspan="4" class="text-danger"> Loss of Pay  <span style="float: right;"><small> INR </small>{{$LOPDeduction}} ( {{ $LOP }} Day/s )</span> </td>
 					</tr>
 					@endif
 					<?php 
-						$NetPay = (($TotalBaseEarning+$TotalExtraEarning)-$TotalDeducations)-$LOPDeduction;
+						$NetPay = (($TotalBaseEarning+$TotalExtraEarning)-$TotalDeductions)-$LOPDeduction;
 					?>
 					<tr>
 						<td colspan="4" class="text-success"><b>Net Pay <span style="float: right;"><small> INR </small>{{ $NetPay }}</span></b></td>
@@ -266,6 +268,9 @@
 			        </tbody>
 
 				</table>
+				<center>
+					<a href="/payroll/generate/{{$employee->employeeID}}"><button class="btn btn-primary" onclick="/payroll/generate">Generate Payslips</button></a>
+				</center><br>
 	@endif
 	</div>
 	        </div>

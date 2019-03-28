@@ -394,17 +394,6 @@
 <!-- <link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet"> -->
 <script type="text/javascript" >
 
-
-$( "#date-of-birth" ).datepicker({
-format: "mm/dd/yy",
-weekStart: 0,
-calendarWeeks: true,
-autoclose: true,
-todayHighlight: true,
-rtl: true,
-orientation: "auto"
-});
-
 	function __empType(){
 
 		if($('#employeetype').val() == 1){
@@ -447,6 +436,7 @@ orientation: "auto"
 		var z = 1;
 
 		$(PF_add_button).click(function(e){ 
+			alert('Pf Clicked');
 			e.preventDefault();
 			if(x < PF_max_fields){ 
 				x++; 

@@ -52,3 +52,6 @@ Route::get('/leave/approve', 'leaveController@approve');
 
 Route::get('/payroll', 'payrollController@generate');
 
+Route::get('/payroll/generate', 'payrollController@generatePDF');
+
+Route::get('/payroll/generate/{employee}', 'payrollController@generatePDF');
