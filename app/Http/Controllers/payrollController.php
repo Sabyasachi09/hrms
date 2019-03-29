@@ -35,10 +35,10 @@ class payrollController extends Controller
             ->leftJoin('salary_variables', 'salary_variables.employeeID', '=', 'users.employeeID')
             ->where('users.employeeID', $employeeID)
             ->get();
-
+        $Filename = $employeeID.'_'.date('M').'_'.date('Y');
     	// $pdf = PDF::loadView('payroll.salarySlip', $data);
     	$pdf = PDF::loadView('payroll.salarySlip', compact('PayRollData'));
 
-    	return $pdf->download('Sab_salarySlip.pdf');
+    	return $pdf->download($Filename);
     }
 }

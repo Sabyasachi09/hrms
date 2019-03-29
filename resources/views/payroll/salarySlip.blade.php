@@ -1,7 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<!-- <link href="{{ asset('css/salary.css') }}" rel="stylesheet"> -->
+<!-- <link href="{!! asset('css/salary.css') !!}" media="all" rel="stylesheet" type="text/css" /> -->
+<!-- <link rel="stylesheet" href="{{ URL::asset('css/salary.css') }}" type="text/css" /> -->
+    <title>Document</title>
+    <style>
+        body {
+            /*background: black;*/
+            /*color: #fff;;*/
+        }
+        table{
+        	border-style: solid;
+        	border-width: 0.5px;
+        	padding: 3px;
+        	font-size: 12.5px; 
+        }
 
-@foreach($PayRollData as $employee)
+        td{
+        	/*border-style: solid;*/
+        	padding: 5px 15px 0 15px;
+        	border-left: 1px solid #000;
+    		border-right: 1px solid #000;
+
+        }
+        .th1 {
+        	border-style: solid;
+        	border-width: 1px;
+        	text-align: center;
+        	border-left: 1px solid #000;
+    		border-right: 1px solid #000;
+
+        }
+        .header1{
+        	text-align: center;
+        	font-style: bold;
+        }
+        .amount{
+        	text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+	@foreach($PayRollData as $employee)
 	@if($employee->Basic != 0)
 	<?php 
+// {{ HTML::style('css/salary.css');}}
+// {{ HTML::style('css/salary.css'); }}
+	// {{ URL::asset('css/salary.css');}}
 		$TotalEarnings = 0;
 		$TotalBaseEarning = 0;
 		$TotalExtraEarning = 0;
@@ -14,68 +63,75 @@
 		$TotalBaseEarning = ($employee->Basic + $employee->HRA);
 
 	?>
-	<div class="container-fluid">
-	      <div class="card shadow mb-4">
-	        <div class="card-header py-3">
-	          <h6 class="m-0 font-weight-bold text-primary">Salary Slip for {{ $employee->firstname }} {{ $employee->lastname }} <span style="float: right;"> EmployeeID {{ $employee->employeeID }}</span></h6>
-	        </div>
-	        <div class="card-body">
-	          <div class="table-responsive">
+	<div class="div1">
+	      <!-- <div class="card shadow mb-4">
+	        <div class="card-header py-3"> -->
+	         <!--  <h6 class="m-0 font-weight-bold text-primary">Salary Slip for {{ $employee->firstname }} {{ $employee->lastname }} <span style="float: right;"> EmployeeID {{ $employee->employeeID }}</span></h6> -->
+	        <!-- </div> -->
+	       <!--  <div class="card-body">
+	          <div class="table-responsive">-->
 	          	<meta name="csrf-token" content="{{ csrf_token() }}" />
-	            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+	          	<div class="header1">
+		        	<b>TENVIC SPORTS EDUCATION PRIVATE LIMITED</b><br>
+					<b>No. 530, 22nd Cross, 13th Main Road, Banashankari 2nd Stage, Bangalore - 560070</b><br>
+					<b>Pay slip for the month of <?php echo date('M').'/'.date('Y'); ?></b></br>
+	          	</div><br><br>
+	          	 <h6 class="m-0 font-weight-bold text-primary">Salary Slip for {{ $employee->firstname }} {{ $employee->lastname }} <span style="float: right;"> EmployeeID {{ $employee->employeeID }}</span></h6>
+	          	 <br>
+	            <table width="100%" cellspacing="0">
 	            	<thead>
 	            		<tr>
-	            			<th>Earnings</th>
-	            			<th>Amount <small>(INR)</small></th>
-	            			<th>Deductions</th>
-	            			<th>Amount <small>(INR)</small></th>
+	            			<th class="th1">Earnings</th>
+	            			<th class="th1">Amount <small>(INR)</small></th>
+	            			<th class="th1">Deductions</th>
+	            			<th class="th1">Amount <small>(INR)</small></th>
 	            		</tr>
 
 	            	</thead>
 	            	<tbody>
 	           	
 					<tr>
-						<th>Basic</th>
-						<td>{{ $employee->Basic }}</td>
+						<td>Basic</td>
+						<td class="amount">{{ moneyFormatIndia($employee->Basic) }}</td>
 						<!-- PF Deduction -->
 						@if($employee->PF !=0)
 							<?php $TotalDeductions = ($TotalDeductions + $employee->PF) ;?>
-							<th>PF</th>
-							<td>{{ $employee->PF }}</td>
+							<td>PF</td>
+							<td class="amount">{{ moneyFormatIndia($employee->PF) }}</td>
 						@endif
 					</tr>
 					<tr>
-						<th>HRA</th>
-						<td>{{ $employee->HRA }}</td>
+						<td>HRA</td>
+						<td class="amount">{{ moneyFormatIndia($employee->HRA) }}</td>
 
 						<!-- ESI Deduction -->
 						@if($employee->ESI !=0)
 						<?php $TotalDeductions = ($TotalDeductions + $employee->ESI) ;?>
-							<th>ESI</th>
-							<td>{{ $employee->ESI }}</td>
+							<td>ESI</td>
+							<td class="amount">{{ moneyFormatIndia($employee->ESI) }}</td>
 						@endif
 					</tr>
 
 					@if($employee->Conveyance_Allowance != 0)
 					<?php $TotalBaseEarning = ($TotalBaseEarning+$employee->Conveyance_Allowance);?>
 					<tr>
-						<th>Conveyance Allowance</th>
-						<td>{{ $employee->Conveyance_Allowance }}</td>
+						<td>Conveyance Allowance</td>
+						<td class="amount">{{ moneyFormatIndia($employee->Conveyance_Allowance) }}</td>
 
 						<!-- PT Deduction -->
 						@if($employee->PT !=0)
 						<?php $TotalDeductions = ($TotalDeductions + $employee->PT) ;?>
-							<th>PT</th>
-							<td>{{ $employee->PT }}</td>
+							<td>PT</td>
+							<td class="amount">{{ moneyFormatIndia($employee->PT) }}</td>
 						@endif
 
 					</tr>
 					@else
 						@if($employee->PT !=0)
 						<?php $TotalDeductions = ($TotalDeductions + $employee->PT) ;?>
-						<tr><th></th><td></td>
-							<th>PT</th>
-							<td>{{ $employee->PT }}</td></tr>
+						<tr><td></td><td></td>
+							<td>PT</td>
+							<td class="amount">{{ moneyFormatIndia($employee->PT) }}</td></tr>
 						@endif
 
 					@endif
@@ -84,22 +140,22 @@
 					@if($employee->Medical_Allowance != 0)
 					<?php $TotalBaseEarning = ($TotalBaseEarning+$employee->Medical_Allowance);?>
 					<tr>	
-						<th>Medical-Allowance</th>
-						<td>{{$employee->Medical_Allowance}}</td>
+						<td>Medical-Allowance</td>
+						<td class="amount">{{ moneyFormatIndia($employee->Medical_Allowance) }}</td>
 
 						<!-- TDS Deduction -->
 						@if($employee->TDS !=0)
 						<?php $TotalDeductions = ($TotalDeductions + $employee->TDS) ;?>
-							<th>TDS</th>
-							<td>{{ $employee->TDS }}</td>
+							<td>TDS</td>
+							<td class="amount">{{ moneyFormatIndia($employee->TDS) }}</td>
 						@endif
 					</tr>
 					@else
 						@if($employee->TDS !=0)
 						<?php $TotalDeductions = ($TotalDeductions + $employee->TDS) ;?>
-							<tr><th></th><td></td>
-							<th>TDS</th>
-							<td>{{ $employee->TDS }}</td></tr>
+							<tr><td></td><td></td>
+							<td>TDS</td>
+							<td class="amount">{{ moneyFormatIndia($employee->TDS) }}</td></tr>
 						@endif
 
 					@endif
@@ -107,99 +163,100 @@
 					@if($employee->LTA != 0)
 					<?php $TotalBaseEarning = ($TotalBaseEarning+$employee->LTA);?>
 					<tr>
-						<th>LTA</th>
-						<td>{{ $employee->LTA }}</td>
+						<td>LTA</td>
+						<td class="amount">{{ moneyFormatIndia($employee->LTA) }}</td>
 
 						<!-- Recoveries Deduction -->
 						@if($employee->Recoveries !=0)
 						<?php $TotalDeductions = ($TotalDeductions + $employee->Recoveries) ;?>
-							<th>Recoveries</th>
-							<td>{{ $employee->Recoveries }}</td>
+							<td>Recoveries</td>
+							<td class="amount">{{ moneyFormatIndia($employee->Recoveries) }}</td>
 						@endif
 					</tr>
 					@else
 						@if($employee->Recoveries !=0)
 						<?php $TotalDeductions = ($TotalDeductions + $employee->Recoveries) ;?>
-							<tr><th></th><td></td>
-							<th>Recoveries</th>
-							<td>{{ $employee->Recoveries }}</td></tr>
+							<tr><td></td><td></td>
+							<td>Recoveries</td>
+							<td class="amount">{{ moneyFormatIndia($employee->Recoveries) }}</td></tr>
 						@endif
 					@endif
 
 					@if($employee->Other_Allowance != 0)
 					<?php $TotalBaseEarning = ($TotalBaseEarning+$employee->Other_Allowance);?>
 					<tr>
-						<th>Other Allowance</th>
-						<td>{{ $employee->Other_Allowance }}</td>
+						<td>Other Allowance</td>
+						<td class="amount">{{ moneyFormatIndia($employee->Other_Allowance) }}</td>
 
 						<!-- Other  Deduction -->
 						@if($employee->Other_Deduction !=0)
 						<?php $TotalDeductions = ($TotalDeductions + $employee->Other_Deduction) ;?>
-							<th>Other_Deduction</th>
-							<td>{{ $employee->Other_Deduction }}</td>
+							<td>Other Deductions</td>
+							<td class="amount">{{ moneyFormatIndia($employee->Other_Deduction) }}</td>
 						@endif
 
 					</tr>
 					@else
 						@if($employee->Other_Deduction !=0)
 						<?php $TotalDeductions = ($TotalDeductions + $employee->Other_Deduction) ;?>
-						<tr><th></th><td></td>
-							<th>Other_Deduction</th>
-							<td>{{ $employee->Other_Deduction }}</td></tr>
+						<tr><td></td><td></td>
+							<td>Other Deductions</td>
+							<td class="amount">{{ moneyFormatIndia($employee->Other_Deduction) }}</td></tr>
 						@endif
 					@endif
 						
 					@if($employee->Referral_Bonus !=0)
 					<?php $TotalExtraEarning = ($TotalExtraEarning + $employee->Referral_Bonus) ;?>
 					<tr>
-						<th>Referral Bonus</th>
-						<td>{{ $employee->Referral_Bonus }}</td>
+						<td>Referral Bonus</td>
+						<td class="amount">{{ moneyFormatIndia($employee->Referral_Bonus) }}</td>
 
 						<!-- Medical_Insurance Deduction -->
 						@if($employee->Medical_Insurance !=0)
 						<?php $TotalDeductions = ($TotalDeductions + $employee->Medical_Insurance) ;?>
-							<th>Medical Insurance</th>
-							<td>{{ $employee->Medical_Insurance }}</td>
+							<td>Medical Insurance</td>
+							<td class="amount">{{ moneyFormatIndia($employee->Medical_Insurance) }}</td>
 						@endif
 
 					</tr>
 					@else
 						@if($employee->Medical_Insurance !=0)
 						<?php $TotalDeductions = ($TotalDeductions + $employee->Medical_Insurance) ;?>
-						<tr><th></th><td></td>
-							<th>Medical Insurance</th>
-							<td>{{ $employee->Medical_Insurance }}</td></tr>
+						<tr><td></td><td></td>
+							<td>Medical Insurance</td>
+							<td class="amount">{{ moneyFormatIndia($employee->Medical_Insurance) }}</td></tr>
 						@endif
 					@endif
 
 					@if($employee->ASP_Share !=0)
 					<?php $TotalExtraEarning = ($TotalExtraEarning + $employee->ASP_Share) ;?>
 					<tr>
-						<th>ASP Share</th>
-						<td>{{ $employee->ASP_Share }}</td>
+						<td>ASP Share</td>
+						<td class="amount">{{ moneyFormatIndia($employee->ASP_Share) }}</td>
 
 						<!-- Loan_Recovery Deduction -->
 						@if($employee->Loan_Recovery !=0)
 						<?php $TotalDeductions = ($TotalDeductions + $employee->Loan_Recovery) ;?>
-							<th>Loan Recovery</th>
-							<td>{{ $employee->Loan_Recovery }}</td>
+							<td>Loan Recovery</td>
+							<td class="amount">{{ moneyFormatIndia($employee->Loan_Recovery) }}</td>
 						@endif
 
 					</tr>
 					@else
 						@if($employee->Loan_Recovery !=0)
 						<?php $TotalDeductions = ($TotalDeductions + $employee->Loan_Recovery) ;?>
-							<tr><th></th><td></td>
-							<th>Loan Recovery</th>
-							<td>{{ $employee->Loan_Recovery }}</td></tr>
+							<tr><td></td><td></td>
+							<td>Loan Recovery</td>
+							<td class="amount">{{ moneyFormatIndia($employee->Loan_Recovery) }}</td></tr>
 						@endif
 					@endif
 
 					@if($employee->Arrears !=0)
 					<?php $TotalExtraEarning = ($TotalExtraEarning + $employee->Arrears) ;?>
 					<tr>
-						<th>Arrears</th>
-						<td>{{ $employee->Arrears }}</td>
+						<td>Arrears</td>
+						<td class="amount">{{ moneyFormatIndia($employee->Arrears) }}</td>
+						<td></td><td></td>
 
 					</tr>
 					@endif
@@ -207,32 +264,40 @@
 					@if($employee->Reimbursement !=0)
 					<?php $TotalExtraEarning = ($TotalExtraEarning + $employee->Reimbursement) ;?>
 					<tr>
-						<th>Reimbursement</th>
-						<td>{{ $employee->Reimbursement }}</td>
-
+						<td>Reimbursement</td>
+						<td class="amount">{{ moneyFormatIndia($employee->Reimbursement) }}</td>
+						<td></td><td></td>
 					</tr>
 					@endif
 
 					@if($employee->Marriage_Bonus !=0)
 					<?php $TotalExtraEarning = ($TotalExtraEarning + $employee->Marriage_Bonus) ;?>
 					<tr>
-						<th>Marriage Bonus</th>
-						<td>{{ $employee->Marriage_Bonus }}</td>
-
+						<td>Marriage Bonus</td>
+						<td class="amount">{{ moneyFormatIndia($employee->Marriage_Bonus) }}</td>
+						<td></td><td></td>
 					</tr>
 					@endif
 
-
 					</tr>
 
+					<tr><td></td><td></td><td></td><td></td></tr>
 					<tr>
-						<td colspan="4" class="text-success"> Total Base Earnings <span style="float: right;"><small> INR </small>{{ $TotalBaseEarning }}</span></td>
+						<th class="th1">Total</th>
+						<th class="th1">{{ moneyFormatIndia($TotalBaseEarning+$TotalExtraEarning) }}</th>
+						<th class="th1">Total</th>
+						<th class="th1">{{ moneyFormatIndia($TotalDeductions) }}</th>
+
+					</tr>
+					<tr><td colspan="4"><br></td></tr>
+					<tr>
+						<td colspan="4" class="text-success"><b> Total Base Earnings </b><span style="float: right;"><small> INR </small><b>{{ moneyFormatIndia($TotalBaseEarning) }}</b></span></td>
 					</tr>
 					<tr>
-						<td colspan="4" class="text-info"> Total Extra Earnings <span style="float: right;"><small> INR </small>{{ $TotalExtraEarning }}</span></td>
+						<td colspan="4" class="text-info"><b> Total Extra Earnings</b> <span style="float: right;"><small> INR </small><b>{{ moneyFormatIndia($TotalExtraEarning) }}</b></span></td>
 					</tr>
 					<tr>
-						<td colspan="4" class="text-warning"> Total Deductions <span style="float: right;"><small> INR </small>{{ $TotalDeductions }}</span></td>
+						<td colspan="4" class="text-warning"> <b>Total Deductions</b> <span style="float: right;"><small> INR </small><b>{{ moneyFormatIndia($TotalDeductions) }}</b></span></td>
 					</tr>
 					@if($LOP !=0)
 					<?php 
@@ -240,22 +305,123 @@
 						$LOPDeduction = round(($PayPerDay * $LOP));
 					?>
 					<tr>
-						<td colspan="4" class="text-danger"> Loss of Pay  <span style="float: right;"><small> INR </small>{{$LOPDeduction}} ( {{ $LOP }} Day/s )</span> </td>
+						<td colspan="4" class="text-danger"><b> Loss of Pay ( {{ $LOP }} Day/s )</b>  <span style="float: right;"><small> INR </small><b>{{moneyFormatIndia($LOPDeduction)}}</b> </span></td>
 					</tr>
 					@endif
 					<?php 
 						$NetPay = (($TotalBaseEarning+$TotalExtraEarning)-$TotalDeductions)-$LOPDeduction;
 					?>
+					<tr><td colspan="4"><br><hr></hr></td></tr>
 					<tr>
-						<td colspan="4" class="text-success">Net Pay <span style="float: right;"><small> INR </small>{{ $NetPay }}</span></td>
+						<td colspan="4" class="text-success"><strong>Net Pay </strong><span style="float: right;"><small> INR </small><b>{{ moneyFormatIndia($NetPay) }}</b></span></td>
 					</tr>
+					<tr>
+						<td colspan="4" class="text-success"><strong>Net Pay in Words </strong><span style="float: right;"><b>{{ convertToIndianCurrency($NetPay) }}</b></span></td>
+					</tr>
+					<tr><td colspan="4"><br><hr></hr></td></tr>
+					<tr><td colspan="4"><br><br></td></tr>
+					<tr>
+						<td colspan="4"><span style="float: right;"><b>Authorized Signatory</b></span></td>
+					</tr>
+					<tr><td colspan="4"><br><br></td></tr>
 			        </tbody>
 
 				</table>
 				
 	@endif
-	</div>
+<!-- 	</div>
 	        </div>
-	      </div>
+	      </div> -->
 	    </div>
 @endforeach
+
+</body>
+</html>
+
+<?php 
+
+	
+	function convertToIndianCurrency($number) {
+    $no = round($number);
+    $decimal = round($number - ($no = floor($number)), 2) * 100;    
+    $digits_length = strlen($no);    
+    $i = 0;
+    $str = array();
+    $words = array(
+        0 => '',
+        1 => 'One',
+        2 => 'Two',
+        3 => 'Three',
+        4 => 'Four',
+        5 => 'Five',
+        6 => 'Six',
+        7 => 'Seven',
+        8 => 'Eight',
+        9 => 'Nine',
+        10 => 'Ten',
+        11 => 'Eleven',
+        12 => 'Twelve',
+        13 => 'Thirteen',
+        14 => 'Fourteen',
+        15 => 'Fifteen',
+        16 => 'Sixteen',
+        17 => 'Seventeen',
+        18 => 'Eighteen',
+        19 => 'Nineteen',
+        20 => 'Twenty',
+        30 => 'Thirty',
+        40 => 'Forty',
+        50 => 'Fifty',
+        60 => 'Sixty',
+        70 => 'Seventy',
+        80 => 'Eighty',
+        90 => 'Ninety');
+    $digits = array('', 'Hundred', 'Thousand', 'Lakh', 'Crore');
+    while ($i < $digits_length) {
+        $divider = ($i == 2) ? 10 : 100;
+        $number = floor($no % $divider);
+        $no = floor($no / $divider);
+        $i += $divider == 10 ? 1 : 2;
+        if ($number) {
+            $plural = (($counter = count($str)) && $number > 9) ? 's' : null;            
+            $str [] = ($number < 21) ? $words[$number] . ' ' . $digits[$counter] . $plural : $words[floor($number / 10) * 10] . ' ' . $words[$number % 10] . ' ' . $digits[$counter] . $plural;
+        } else {
+            $str [] = null;
+        }  
+    }
+    
+    $Rupees = implode(' ', array_reverse($str));
+    $paise = ($decimal) ? "And Paise " . ($words[$decimal - $decimal%10]) ." " .($words[$decimal%10])  : '';
+    return ($Rupees ? 'Rupees ' . $Rupees : '') . $paise . " Only";
+}
+
+function moneyFormatIndia($num) {
+    $explrestunits = "" ;
+    if(strlen($num)>3) {
+        $lastthree = substr($num, strlen($num)-3, strlen($num));
+        $restunits = substr($num, 0, strlen($num)-3); // extracts the last three digits
+        $restunits = (strlen($restunits)%2 == 1)?"0".$restunits:$restunits; // explodes the remaining digits in 2's formats, adds a zero in the beginning to maintain the 2's grouping.
+        $expunit = str_split($restunits, 2);
+        for($i=0; $i<sizeof($expunit); $i++) {
+            // creates each of the 2's group and adds a comma to the end
+            if($i==0) {
+                $explrestunits .= (int)$expunit[$i].","; // if is first value , convert into integer
+            } else {
+                $explrestunits .= $expunit[$i].",";
+            }
+        }
+        $thecash = $explrestunits.$lastthree;
+    } else {
+        $thecash = $num;
+    }
+    return $thecash; // writes the final format where $currency is the currency symbol.
+}
+
+ 
+?>
+<!-- {{ URL::asset('css/salary.css') }} -->
+<!-- <link href="{{ asset('css/salary.css') }}" rel="stylesheet"> -->
+<!-- <link href="{!! asset('css/salary.css') !!}" media="all" rel="stylesheet" type="text/css" /> -->
+<!-- <link rel="stylesheet" href="{{ URL::asset('css/salary.css') }}" type="text/css" /> -->
+<!-- <link rel="stylesheet" href="/var/www/html/hrms/public/css/salary.css" media="all" /> -->
+<!-- <script type="text/javascript" src="{!! asset('js/app.min.js') !!}"></script> -->

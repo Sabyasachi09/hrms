@@ -256,7 +256,7 @@
 						$LOPDeduction = round(($PayPerDay * $LOP));
 					?>
 					<tr>
-						<td colspan="4" class="text-danger"> Loss of Pay  <span style="float: right;"><small> INR </small>{{$LOPDeduction}} ( {{ $LOP }} Day/s )</span> </td>
+						<td colspan="4" class="text-danger"> Loss of Pay ( {{ $LOP }} Day/s ) <span style="float: right;"><small> INR </small>{{$LOPDeduction}} </span> </td>
 					</tr>
 					@endif
 					<?php 
@@ -265,6 +265,7 @@
 					<tr>
 						<td colspan="4" class="text-success"><b>Net Pay <span style="float: right;"><small> INR </small>{{ $NetPay }}</span></b></td>
 					</tr>
+					
 			        </tbody>
 
 				</table>
