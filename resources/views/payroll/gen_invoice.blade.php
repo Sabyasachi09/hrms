@@ -100,7 +100,7 @@
 					@if($employee->Medical_Allowance != 0)
 					<?php $TotalBaseEarning = ($TotalBaseEarning+$employee->Medical_Allowance);?>
 					<tr>	
-						<th>Medical-Allowance</th>
+						<th>Medical Allowance</th>
 						<td>{{$employee->Medical_Allowance}}</td>
 
 						<!-- TDS Deduction -->
@@ -151,7 +151,7 @@
 						<!-- Other  Deduction -->
 						@if($employee->Other_Deduction !=0)
 						<?php $TotalDeductions = ($TotalDeductions + $employee->Other_Deduction) ;?>
-							<th>Other_Deduction</th>
+							<th>Other Deductions</th>
 							<td>{{ $employee->Other_Deduction }}</td>
 						@endif
 
@@ -160,7 +160,7 @@
 						@if($employee->Other_Deduction !=0)
 						<?php $TotalDeductions = ($TotalDeductions + $employee->Other_Deduction) ;?>
 						<tr><th></th><td></td>
-							<th>Other_Deduction</th>
+							<th>Other Deductions</th>
 							<td>{{ $employee->Other_Deduction }}</td></tr>
 						@endif
 					@endif

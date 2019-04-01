@@ -3,27 +3,25 @@
 <head>
 	<title></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<!-- <link href="{{ asset('css/salary.css') }}" rel="stylesheet"> -->
-<!-- <link href="{!! asset('css/salary.css') !!}" media="all" rel="stylesheet" type="text/css" /> -->
-<!-- <link rel="stylesheet" href="{{ URL::asset('css/salary.css') }}" type="text/css" /> -->
-    <title>Document</title>
+    <title>Salary Slip</title>
     <style>
         body {
             /*background: black;*/
             /*color: #fff;;*/
         }
-        table{
+        .sliptable table{
         	border-style: solid;
         	border-width: 0.5px;
         	padding: 3px;
         	font-size: 12.5px; 
         }
 
-        td{
+        .sliptable td{
         	/*border-style: solid;*/
         	padding: 5px 15px 0 15px;
         	border-left: 1px solid #000;
     		border-right: 1px solid #000;
+    		font-size: 12.5px; 
 
         }
         .th1 {
@@ -41,6 +39,22 @@
         .amount{
         	text-align: center;
         }
+
+        .basicTable table{
+        	border-style: none;
+        	text-align: center;
+        	font-size: 12.5px;
+        }
+        .basicTable tr{
+        	font-size: 12.5px;
+        }
+
+        .basicTable td{
+        	padding: 5px 15px 0 15px;
+        	border-left: none;
+    		border-right: none;
+    		font-size: 12.5px;
+        }
     </style>
 </head>
 <body>
@@ -48,9 +62,6 @@
 	@foreach($PayRollData as $employee)
 	@if($employee->Basic != 0)
 	<?php 
-// {{ HTML::style('css/salary.css');}}
-// {{ HTML::style('css/salary.css'); }}
-	// {{ URL::asset('css/salary.css');}}
 		$TotalEarnings = 0;
 		$TotalBaseEarning = 0;
 		$TotalExtraEarning = 0;
@@ -59,279 +70,298 @@
 		$NetPay = 0;
 		$currentDayOfMonth=date('t');
 		$LOP=($currentDayOfMonth - $employee->Pay_Days);
-		// $LOP=($employee->Pay_Days - $employee->Present_Days);
 		$TotalBaseEarning = ($employee->Basic + $employee->HRA);
 
 	?>
 	<div class="div1">
-	      <!-- <div class="card shadow mb-4">
-	        <div class="card-header py-3"> -->
-	         <!--  <h6 class="m-0 font-weight-bold text-primary">Salary Slip for {{ $employee->firstname }} {{ $employee->lastname }} <span style="float: right;"> EmployeeID {{ $employee->employeeID }}</span></h6> -->
-	        <!-- </div> -->
-	       <!--  <div class="card-body">
-	          <div class="table-responsive">-->
-	          	<meta name="csrf-token" content="{{ csrf_token() }}" />
-	          	<div class="header1">
-		        	<b>TENVIC SPORTS EDUCATION PRIVATE LIMITED</b><br>
-					<b>No. 530, 22nd Cross, 13th Main Road, Banashankari 2nd Stage, Bangalore - 560070</b><br>
-					<b>Pay slip for the month of <?php echo date('M').'/'.date('Y'); ?></b></br>
-	          	</div><br><br>
-	          	 <h6 class="m-0 font-weight-bold text-primary">Salary Slip for {{ $employee->firstname }} {{ $employee->lastname }} <span style="float: right;"> EmployeeID {{ $employee->employeeID }}</span></h6>
+      	<meta name="csrf-token" content="{{ csrf_token() }}" />
+      	<div class="header1">
+        	<b>TENVIC SPORTS EDUCATION PRIVATE LIMITED</b><br>
+			<b>No. 530, 22nd Cross, 13th Main Road, Banashankari 2nd Stage, Bangalore - 560070</b><br>
+			<b>Pay slip for the month of <?php echo date('M').'/'.date('Y'); ?></b></br>
+      	</div><br><br>
+      	<center>
+      		<table width="100%" class="basicTable">
+      			<tbody>
+      				<tr class="basicTable">
+      					<td>Employee ID : </td>
+      					<td>{{ $employee->employeeID }}</td>
+      					<td>Employee Name : </td>
+      					<td>{{ $employee->firstname.' '.$employee->lastname }}</td>
+      				</tr>
+      				<tr class="basicTable">
+      					<td>Pay Days : </td>
+      					<td>{{ $employee->Pay_Days }}</td>
+      					<td>Present Days : </td>
+      					<td>{{ $employee->Present_Days }}</td>
+      				</tr>
+      				<tr class="basicTable">
+      					<td>A/C No : </td>
+      					<td>{{ $employee->salary_ac }}</td>
+      					<td>PAN : </td>
+      					<td>{{ $employee->pan_number }}</td>
+      				</tr>
+      				<tr class="basicTable">
+      					<td>UAN : </td>
+      					<td>{{ $employee->uan }}</td>
+      					<td></td>
+      					<td></td>
+      				</tr>
+      			</tbody>
+      		</table>
+      	</center>
 	          	 <br>
-	            <table width="100%" cellspacing="0">
-	            	<thead>
-	            		<tr>
-	            			<th class="th1">Earnings</th>
-	            			<th class="th1">Amount <small>(INR)</small></th>
-	            			<th class="th1">Deductions</th>
-	            			<th class="th1">Amount <small>(INR)</small></th>
-	            		</tr>
 
-	            	</thead>
-	            	<tbody>
-	           	
-					<tr>
-						<td>Basic</td>
-						<td class="amount">{{ moneyFormatIndia($employee->Basic) }}</td>
-						<!-- PF Deduction -->
-						@if($employee->PF !=0)
-							<?php $TotalDeductions = ($TotalDeductions + $employee->PF) ;?>
-							<td>PF</td>
-							<td class="amount">{{ moneyFormatIndia($employee->PF) }}</td>
-						@endif
-					</tr>
-					<tr>
-						<td>HRA</td>
-						<td class="amount">{{ moneyFormatIndia($employee->HRA) }}</td>
+        <table width="100%" cellspacing="0" class="sliptable">
+        	<thead>
+        		<tr>
+        			<th class="th1">Earnings</th>
+        			<th class="th1">Amount <small>(INR)</small></th>
+        			<th class="th1">Deductions</th>
+        			<th class="th1">Amount <small>(INR)</small></th>
+        		</tr>
 
-						<!-- ESI Deduction -->
-						@if($employee->ESI !=0)
-						<?php $TotalDeductions = ($TotalDeductions + $employee->ESI) ;?>
-							<td>ESI</td>
-							<td class="amount">{{ moneyFormatIndia($employee->ESI) }}</td>
-						@endif
-					</tr>
+        	</thead>
+        	<tbody>
+       	
+			<tr>
+				<td>Basic</td>
+				<td class="amount">{{ moneyFormatIndia($employee->Basic) }}</td>
+				<!-- PF Deduction -->
+				@if($employee->PF !=0)
+					<?php $TotalDeductions = ($TotalDeductions + $employee->PF) ;?>
+					<td>PF</td>
+					<td class="amount">{{ moneyFormatIndia($employee->PF) }}</td>
+				@endif
+			</tr>
+			<tr>
+				<td>HRA</td>
+				<td class="amount">{{ moneyFormatIndia($employee->HRA) }}</td>
 
-					@if($employee->Conveyance_Allowance != 0)
-					<?php $TotalBaseEarning = ($TotalBaseEarning+$employee->Conveyance_Allowance);?>
-					<tr>
-						<td>Conveyance Allowance</td>
-						<td class="amount">{{ moneyFormatIndia($employee->Conveyance_Allowance) }}</td>
+				<!-- ESI Deduction -->
+				@if($employee->ESI !=0)
+				<?php $TotalDeductions = ($TotalDeductions + $employee->ESI) ;?>
+					<td>ESI</td>
+					<td class="amount">{{ moneyFormatIndia($employee->ESI) }}</td>
+				@endif
+			</tr>
 
-						<!-- PT Deduction -->
-						@if($employee->PT !=0)
-						<?php $TotalDeductions = ($TotalDeductions + $employee->PT) ;?>
-							<td>PT</td>
-							<td class="amount">{{ moneyFormatIndia($employee->PT) }}</td>
-						@endif
+			@if($employee->Conveyance_Allowance != 0)
+			<?php $TotalBaseEarning = ($TotalBaseEarning+$employee->Conveyance_Allowance);?>
+			<tr>
+				<td>Conveyance Allowance</td>
+				<td class="amount">{{ moneyFormatIndia($employee->Conveyance_Allowance) }}</td>
 
-					</tr>
-					@else
-						@if($employee->PT !=0)
-						<?php $TotalDeductions = ($TotalDeductions + $employee->PT) ;?>
-						<tr><td></td><td></td>
-							<td>PT</td>
-							<td class="amount">{{ moneyFormatIndia($employee->PT) }}</td></tr>
-						@endif
+				<!-- PT Deduction -->
+				@if($employee->PT !=0)
+				<?php $TotalDeductions = ($TotalDeductions + $employee->PT) ;?>
+					<td>PT</td>
+					<td class="amount">{{ moneyFormatIndia($employee->PT) }}</td>
+				@endif
 
-					@endif
+			</tr>
+			@else
+				@if($employee->PT !=0)
+				<?php $TotalDeductions = ($TotalDeductions + $employee->PT) ;?>
+				<tr><td></td><td></td>
+					<td>PT</td>
+					<td class="amount">{{ moneyFormatIndia($employee->PT) }}</td></tr>
+				@endif
+
+			@endif
 
 
-					@if($employee->Medical_Allowance != 0)
-					<?php $TotalBaseEarning = ($TotalBaseEarning+$employee->Medical_Allowance);?>
-					<tr>	
-						<td>Medical-Allowance</td>
-						<td class="amount">{{ moneyFormatIndia($employee->Medical_Allowance) }}</td>
+			@if($employee->Medical_Allowance != 0)
+			<?php $TotalBaseEarning = ($TotalBaseEarning+$employee->Medical_Allowance);?>
+			<tr>	
+				<td>Medical-Allowance</td>
+				<td class="amount">{{ moneyFormatIndia($employee->Medical_Allowance) }}</td>
 
-						<!-- TDS Deduction -->
-						@if($employee->TDS !=0)
-						<?php $TotalDeductions = ($TotalDeductions + $employee->TDS) ;?>
-							<td>TDS</td>
-							<td class="amount">{{ moneyFormatIndia($employee->TDS) }}</td>
-						@endif
-					</tr>
-					@else
-						@if($employee->TDS !=0)
-						<?php $TotalDeductions = ($TotalDeductions + $employee->TDS) ;?>
-							<tr><td></td><td></td>
-							<td>TDS</td>
-							<td class="amount">{{ moneyFormatIndia($employee->TDS) }}</td></tr>
-						@endif
+				<!-- TDS Deduction -->
+				@if($employee->TDS !=0)
+				<?php $TotalDeductions = ($TotalDeductions + $employee->TDS) ;?>
+					<td>TDS</td>
+					<td class="amount">{{ moneyFormatIndia($employee->TDS) }}</td>
+				@endif
+			</tr>
+			@else
+				@if($employee->TDS !=0)
+				<?php $TotalDeductions = ($TotalDeductions + $employee->TDS) ;?>
+					<tr><td></td><td></td>
+					<td>TDS</td>
+					<td class="amount">{{ moneyFormatIndia($employee->TDS) }}</td></tr>
+				@endif
 
-					@endif
+			@endif
 
-					@if($employee->LTA != 0)
-					<?php $TotalBaseEarning = ($TotalBaseEarning+$employee->LTA);?>
-					<tr>
-						<td>LTA</td>
-						<td class="amount">{{ moneyFormatIndia($employee->LTA) }}</td>
+			@if($employee->LTA != 0)
+			<?php $TotalBaseEarning = ($TotalBaseEarning+$employee->LTA);?>
+			<tr>
+				<td>LTA</td>
+				<td class="amount">{{ moneyFormatIndia($employee->LTA) }}</td>
 
-						<!-- Recoveries Deduction -->
-						@if($employee->Recoveries !=0)
-						<?php $TotalDeductions = ($TotalDeductions + $employee->Recoveries) ;?>
-							<td>Recoveries</td>
-							<td class="amount">{{ moneyFormatIndia($employee->Recoveries) }}</td>
-						@endif
-					</tr>
-					@else
-						@if($employee->Recoveries !=0)
-						<?php $TotalDeductions = ($TotalDeductions + $employee->Recoveries) ;?>
-							<tr><td></td><td></td>
-							<td>Recoveries</td>
-							<td class="amount">{{ moneyFormatIndia($employee->Recoveries) }}</td></tr>
-						@endif
-					@endif
+				<!-- Recoveries Deduction -->
+				@if($employee->Recoveries !=0)
+				<?php $TotalDeductions = ($TotalDeductions + $employee->Recoveries) ;?>
+					<td>Recoveries</td>
+					<td class="amount">{{ moneyFormatIndia($employee->Recoveries) }}</td>
+				@endif
+			</tr>
+			@else
+				@if($employee->Recoveries !=0)
+				<?php $TotalDeductions = ($TotalDeductions + $employee->Recoveries) ;?>
+					<tr><td></td><td></td>
+					<td>Recoveries</td>
+					<td class="amount">{{ moneyFormatIndia($employee->Recoveries) }}</td></tr>
+				@endif
+			@endif
 
-					@if($employee->Other_Allowance != 0)
-					<?php $TotalBaseEarning = ($TotalBaseEarning+$employee->Other_Allowance);?>
-					<tr>
-						<td>Other Allowance</td>
-						<td class="amount">{{ moneyFormatIndia($employee->Other_Allowance) }}</td>
+			@if($employee->Other_Allowance != 0)
+			<?php $TotalBaseEarning = ($TotalBaseEarning+$employee->Other_Allowance);?>
+			<tr>
+				<td>Other Allowance</td>
+				<td class="amount">{{ moneyFormatIndia($employee->Other_Allowance) }}</td>
 
-						<!-- Other  Deduction -->
-						@if($employee->Other_Deduction !=0)
-						<?php $TotalDeductions = ($TotalDeductions + $employee->Other_Deduction) ;?>
-							<td>Other Deductions</td>
-							<td class="amount">{{ moneyFormatIndia($employee->Other_Deduction) }}</td>
-						@endif
+				<!-- Other  Deduction -->
+				@if($employee->Other_Deduction !=0)
+				<?php $TotalDeductions = ($TotalDeductions + $employee->Other_Deduction) ;?>
+					<td>Other Deductions</td>
+					<td class="amount">{{ moneyFormatIndia($employee->Other_Deduction) }}</td>
+				@endif
 
-					</tr>
-					@else
-						@if($employee->Other_Deduction !=0)
-						<?php $TotalDeductions = ($TotalDeductions + $employee->Other_Deduction) ;?>
-						<tr><td></td><td></td>
-							<td>Other Deductions</td>
-							<td class="amount">{{ moneyFormatIndia($employee->Other_Deduction) }}</td></tr>
-						@endif
-					@endif
-						
-					@if($employee->Referral_Bonus !=0)
-					<?php $TotalExtraEarning = ($TotalExtraEarning + $employee->Referral_Bonus) ;?>
-					<tr>
-						<td>Referral Bonus</td>
-						<td class="amount">{{ moneyFormatIndia($employee->Referral_Bonus) }}</td>
+			</tr>
+			@else
+				@if($employee->Other_Deduction !=0)
+				<?php $TotalDeductions = ($TotalDeductions + $employee->Other_Deduction) ;?>
+				<tr><td></td><td></td>
+					<td>Other Deductions</td>
+					<td class="amount">{{ moneyFormatIndia($employee->Other_Deduction) }}</td></tr>
+				@endif
+			@endif
+				
+			@if($employee->Referral_Bonus !=0)
+			<?php $TotalExtraEarning = ($TotalExtraEarning + $employee->Referral_Bonus) ;?>
+			<tr>
+				<td>Referral Bonus</td>
+				<td class="amount">{{ moneyFormatIndia($employee->Referral_Bonus) }}</td>
 
-						<!-- Medical_Insurance Deduction -->
-						@if($employee->Medical_Insurance !=0)
-						<?php $TotalDeductions = ($TotalDeductions + $employee->Medical_Insurance) ;?>
-							<td>Medical Insurance</td>
-							<td class="amount">{{ moneyFormatIndia($employee->Medical_Insurance) }}</td>
-						@endif
+				<!-- Medical_Insurance Deduction -->
+				@if($employee->Medical_Insurance !=0)
+				<?php $TotalDeductions = ($TotalDeductions + $employee->Medical_Insurance) ;?>
+					<td>Medical Insurance</td>
+					<td class="amount">{{ moneyFormatIndia($employee->Medical_Insurance) }}</td>
+				@endif
 
-					</tr>
-					@else
-						@if($employee->Medical_Insurance !=0)
-						<?php $TotalDeductions = ($TotalDeductions + $employee->Medical_Insurance) ;?>
-						<tr><td></td><td></td>
-							<td>Medical Insurance</td>
-							<td class="amount">{{ moneyFormatIndia($employee->Medical_Insurance) }}</td></tr>
-						@endif
-					@endif
+			</tr>
+			@else
+				@if($employee->Medical_Insurance !=0)
+				<?php $TotalDeductions = ($TotalDeductions + $employee->Medical_Insurance) ;?>
+				<tr><td></td><td></td>
+					<td>Medical Insurance</td>
+					<td class="amount">{{ moneyFormatIndia($employee->Medical_Insurance) }}</td></tr>
+				@endif
+			@endif
 
-					@if($employee->ASP_Share !=0)
-					<?php $TotalExtraEarning = ($TotalExtraEarning + $employee->ASP_Share) ;?>
-					<tr>
-						<td>ASP Share</td>
-						<td class="amount">{{ moneyFormatIndia($employee->ASP_Share) }}</td>
+			@if($employee->ASP_Share !=0)
+			<?php $TotalExtraEarning = ($TotalExtraEarning + $employee->ASP_Share) ;?>
+			<tr>
+				<td>ASP Share</td>
+				<td class="amount">{{ moneyFormatIndia($employee->ASP_Share) }}</td>
 
-						<!-- Loan_Recovery Deduction -->
-						@if($employee->Loan_Recovery !=0)
-						<?php $TotalDeductions = ($TotalDeductions + $employee->Loan_Recovery) ;?>
-							<td>Loan Recovery</td>
-							<td class="amount">{{ moneyFormatIndia($employee->Loan_Recovery) }}</td>
-						@endif
+				<!-- Loan_Recovery Deduction -->
+				@if($employee->Loan_Recovery !=0)
+				<?php $TotalDeductions = ($TotalDeductions + $employee->Loan_Recovery) ;?>
+					<td>Loan Recovery</td>
+					<td class="amount">{{ moneyFormatIndia($employee->Loan_Recovery) }}</td>
+				@endif
 
-					</tr>
-					@else
-						@if($employee->Loan_Recovery !=0)
-						<?php $TotalDeductions = ($TotalDeductions + $employee->Loan_Recovery) ;?>
-							<tr><td></td><td></td>
-							<td>Loan Recovery</td>
-							<td class="amount">{{ moneyFormatIndia($employee->Loan_Recovery) }}</td></tr>
-						@endif
-					@endif
+			</tr>
+			@else
+				@if($employee->Loan_Recovery !=0)
+				<?php $TotalDeductions = ($TotalDeductions + $employee->Loan_Recovery) ;?>
+					<tr><td></td><td></td>
+					<td>Loan Recovery</td>
+					<td class="amount">{{ moneyFormatIndia($employee->Loan_Recovery) }}</td></tr>
+				@endif
+			@endif
 
-					@if($employee->Arrears !=0)
-					<?php $TotalExtraEarning = ($TotalExtraEarning + $employee->Arrears) ;?>
-					<tr>
-						<td>Arrears</td>
-						<td class="amount">{{ moneyFormatIndia($employee->Arrears) }}</td>
-						<td></td><td></td>
+			@if($employee->Arrears !=0)
+			<?php $TotalExtraEarning = ($TotalExtraEarning + $employee->Arrears) ;?>
+			<tr>
+				<td>Arrears</td>
+				<td class="amount">{{ moneyFormatIndia($employee->Arrears) }}</td>
+				<td></td><td></td>
 
-					</tr>
-					@endif
+			</tr>
+			@endif
 
-					@if($employee->Reimbursement !=0)
-					<?php $TotalExtraEarning = ($TotalExtraEarning + $employee->Reimbursement) ;?>
-					<tr>
-						<td>Reimbursement</td>
-						<td class="amount">{{ moneyFormatIndia($employee->Reimbursement) }}</td>
-						<td></td><td></td>
-					</tr>
-					@endif
+			@if($employee->Reimbursement !=0)
+			<?php $TotalExtraEarning = ($TotalExtraEarning + $employee->Reimbursement) ;?>
+			<tr>
+				<td>Reimbursement</td>
+				<td class="amount">{{ moneyFormatIndia($employee->Reimbursement) }}</td>
+				<td></td><td></td>
+			</tr>
+			@endif
 
-					@if($employee->Marriage_Bonus !=0)
-					<?php $TotalExtraEarning = ($TotalExtraEarning + $employee->Marriage_Bonus) ;?>
-					<tr>
-						<td>Marriage Bonus</td>
-						<td class="amount">{{ moneyFormatIndia($employee->Marriage_Bonus) }}</td>
-						<td></td><td></td>
-					</tr>
-					@endif
+			@if($employee->Marriage_Bonus !=0)
+			<?php $TotalExtraEarning = ($TotalExtraEarning + $employee->Marriage_Bonus) ;?>
+			<tr>
+				<td>Marriage Bonus</td>
+				<td class="amount">{{ moneyFormatIndia($employee->Marriage_Bonus) }}</td>
+				<td></td><td></td>
+			</tr>
+			@endif
 
-					</tr>
+			</tr>
 
-					<tr><td></td><td></td><td></td><td></td></tr>
-					<tr>
-						<th class="th1">Total</th>
-						<th class="th1">{{ moneyFormatIndia($TotalBaseEarning+$TotalExtraEarning) }}</th>
-						<th class="th1">Total</th>
-						<th class="th1">{{ moneyFormatIndia($TotalDeductions) }}</th>
+			<tr><td></td><td></td><td></td><td></td></tr>
+			<tr>
+				<th class="th1">Total</th>
+				<th class="th1">{{ moneyFormatIndia($TotalBaseEarning+$TotalExtraEarning) }}</th>
+				<th class="th1">Total</th>
+				<th class="th1">{{ moneyFormatIndia($TotalDeductions) }}</th>
 
-					</tr>
-					<tr><td colspan="4"><br></td></tr>
-					<tr>
-						<td colspan="4" class="text-success"><b> Total Base Earnings </b><span style="float: right;"><small> INR </small><b>{{ moneyFormatIndia($TotalBaseEarning) }}</b></span></td>
-					</tr>
-					<tr>
-						<td colspan="4" class="text-info"><b> Total Extra Earnings</b> <span style="float: right;"><small> INR </small><b>{{ moneyFormatIndia($TotalExtraEarning) }}</b></span></td>
-					</tr>
-					<tr>
-						<td colspan="4" class="text-warning"> <b>Total Deductions</b> <span style="float: right;"><small> INR </small><b>{{ moneyFormatIndia($TotalDeductions) }}</b></span></td>
-					</tr>
-					@if($LOP !=0)
-					<?php 
-						$PayPerDay = round(($TotalBaseEarning / $employee->Pay_Days));
-						$LOPDeduction = round(($PayPerDay * $LOP));
-					?>
-					<tr>
-						<td colspan="4" class="text-danger"><b> Loss of Pay ( {{ $LOP }} Day/s )</b>  <span style="float: right;"><small> INR </small><b>{{moneyFormatIndia($LOPDeduction)}}</b> </span></td>
-					</tr>
-					@endif
-					<?php 
-						$NetPay = (($TotalBaseEarning+$TotalExtraEarning)-$TotalDeductions)-$LOPDeduction;
-					?>
-					<tr><td colspan="4"><br><hr></hr></td></tr>
-					<tr>
-						<td colspan="4" class="text-success"><strong>Net Pay </strong><span style="float: right;"><small> INR </small><b>{{ moneyFormatIndia($NetPay) }}</b></span></td>
-					</tr>
-					<tr>
-						<td colspan="4" class="text-success"><strong>Net Pay in Words </strong><span style="float: right;"><b>{{ convertToIndianCurrency($NetPay) }}</b></span></td>
-					</tr>
-					<tr><td colspan="4"><br><hr></hr></td></tr>
-					<tr><td colspan="4"><br><br></td></tr>
-					<tr>
-						<td colspan="4"><span style="float: right;"><b>Authorized Signatory</b></span></td>
-					</tr>
-					<tr><td colspan="4"><br><br></td></tr>
-			        </tbody>
-
-				</table>
+			</tr>
+			<tr><td colspan="4"><br></td></tr>
+			<tr>
+				<td colspan="4" class="text-success"><b> Total Base Earnings </b><span style="float: right;"><small> INR </small><b>{{ moneyFormatIndia($TotalBaseEarning) }}</b></span></td>
+			</tr>
+			<tr>
+				<td colspan="4" class="text-info"><b> Total Extra Earnings</b> <span style="float: right;"><small> INR </small><b>{{ moneyFormatIndia($TotalExtraEarning) }}</b></span></td>
+			</tr>
+			<tr>
+				<td colspan="4" class="text-warning"> <b>Total Deductions</b> <span style="float: right;"><small> INR </small><b>{{ moneyFormatIndia($TotalDeductions) }}</b></span></td>
+			</tr>
+			@if($LOP !=0)
+			<?php 
+				$PayPerDay = round(($TotalBaseEarning / $employee->Pay_Days));
+				$LOPDeduction = round(($PayPerDay * $LOP));
+			?>
+			<tr>
+				<td colspan="4" class="text-danger"><b> Loss of Pay ( {{ $LOP }} Day/s )</b>  <span style="float: right;"><small> INR </small><b>{{moneyFormatIndia($LOPDeduction)}}</b> </span></td>
+			</tr>
+			@endif
+			<?php 
+				$NetPay = (($TotalBaseEarning+$TotalExtraEarning)-$TotalDeductions)-$LOPDeduction;
+			?>
+			<tr><td colspan="4"><br><hr></hr></td></tr>
+			<tr>
+				<td colspan="4" class="text-success"><strong>Net Pay </strong><span style="float: right;"><small> INR </small><b>{{ moneyFormatIndia($NetPay) }}</b></span></td>
+			</tr>
+			<tr>
+				<td colspan="4" class="text-success"><strong>Net Pay in Words </strong><span style="float: right;"><b>{{ convertToIndianCurrency($NetPay) }}</b></span></td>
+			</tr>
+			<tr><td colspan="4"><br><hr></hr></td></tr>
+			<tr><td colspan="4"><br><br></td></tr>
+			<tr>
+				<td colspan="4"><span style="float: right;"><b>Authorized Signatory</b></span></td>
+			</tr>
+			<tr><td colspan="4"><br><br></td></tr>
+	        </tbody>
+		</table>
 				
 	@endif
-<!-- 	</div>
-	        </div>
-	      </div> -->
 	    </div>
 @endforeach
 
@@ -419,9 +449,4 @@ function moneyFormatIndia($num) {
 
  
 ?>
-<!-- {{ URL::asset('css/salary.css') }} -->
-<!-- <link href="{{ asset('css/salary.css') }}" rel="stylesheet"> -->
-<!-- <link href="{!! asset('css/salary.css') !!}" media="all" rel="stylesheet" type="text/css" /> -->
-<!-- <link rel="stylesheet" href="{{ URL::asset('css/salary.css') }}" type="text/css" /> -->
-<!-- <link rel="stylesheet" href="/var/www/html/hrms/public/css/salary.css" media="all" /> -->
-<!-- <script type="text/javascript" src="{!! asset('js/app.min.js') !!}"></script> -->
+
