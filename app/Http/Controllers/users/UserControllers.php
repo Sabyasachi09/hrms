@@ -158,6 +158,7 @@ class UserControllers extends Controller
         $createUser->employeeID=$employeeid;
         $createUser->firstname=$request->input('firstname');
         $createUser->lastname=$request->input('lastname');
+        $createUser->roleID=$request->input('designation');
         $createUser->password= 'tenvic';
         
         $user_details->employeeID=$employeeid;
