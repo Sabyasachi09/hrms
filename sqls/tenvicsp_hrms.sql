@@ -75,8 +75,10 @@ CREATE TABLE `designation` (
 --
 
 INSERT INTO `designation` (`id`, `designation_desc`, `created_at`, `updated_at`, `status`) VALUES
-(1, 'Manager', '2019-02-28 17:20:40', '2019-03-01 09:50:40', 1),
-(2, 'Coach', '2019-02-28 17:20:40', '2019-03-01 09:50:40', 1);
+(2, 'HR Manager', '2019-02-28 17:20:40', '2019-04-03 12:33:05', 1),
+(3, 'Finance Manager', '2019-02-28 17:20:40', '2019-04-03 12:45:41', 1),
+(4, 'Manager', '2019-04-03 07:03:25', '2019-04-03 12:45:45', 1),
+(5, 'Employee', '2019-04-03 07:15:55', '2019-04-03 12:45:55', 1);
 
 -- --------------------------------------------------------
 
@@ -131,7 +133,8 @@ INSERT INTO `esi_details` (`id`, `employeeID`, `name`, `relation`, `dob`, `aadha
 (2, 'AKSP0001', 'e2', 'e2', '2000-01-01', 'lnu', '2019-02-28 22:24:56', '2019-03-01 14:54:56'),
 (3, 'AKSP0002', 'e', 'e', '2000-01-01', 'e', '2019-02-28 22:25:03', '2019-03-01 14:55:03'),
 (4, 'AKSP0002', 'e2', 'e2', '2000-01-01', 'lnu', '2019-02-28 22:25:03', '2019-03-01 14:55:03'),
-(23, 'TA0001', 's', 's', '2000-10-10', 'adsfasdf', '2019-03-20 06:09:56', '2019-03-20 11:39:56');
+(23, 'TA0001', 's', 's', '2000-10-10', 'adsfasdf', '2019-03-20 06:09:56', '2019-03-20 11:39:56'),
+(24, 'TS0001', 'oiuho', 'ioo', '2000-10-01', 'jkhiluhik', '2019-04-03 07:39:39', '2019-04-03 13:09:39');
 
 -- --------------------------------------------------------
 
@@ -180,7 +183,8 @@ CREATE TABLE `leave_quota` (
 
 INSERT INTO `leave_quota` (`id`, `employeeID`, `earned_quota`, `casual_quota`, `comp_quota`, `created_at`, `updated_at`, `status`) VALUES
 (8, 'AKSP0001', 0, 0, 0, '2019-03-12 15:00:20', '2019-03-26 05:42:50', 1),
-(9, 'TA0001', 15, 8, 0, '2019-03-20 00:39:56', '2019-03-20 06:09:56', 1);
+(9, 'TA0001', 15, 8, 0, '2019-03-20 00:39:56', '2019-03-20 06:09:56', 1),
+(10, 'TS0001', 11.5, 8, 0, '2019-04-03 02:09:39', '2019-04-03 07:39:39', 1);
 
 -- --------------------------------------------------------
 
@@ -289,6 +293,46 @@ INSERT INTO `lop_records` (`lop_id`, `employeeID`, `lop`, `lop_date`, `created_a
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `menu_lists`
+--
+
+DROP TABLE IF EXISTS `menu_lists`;
+CREATE TABLE `menu_lists` (
+  `menu_id` int(11) NOT NULL,
+  `sub_menu_of` int(11) NOT NULL,
+  `sub_menu_title` varchar(150) NOT NULL,
+  `sub_menu_link` varchar(150) NOT NULL,
+  `role_id` int(11) NOT NULL,
+  `display_order` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `menu_lists`
+--
+
+INSERT INTO `menu_lists` (`menu_id`, `sub_menu_of`, `sub_menu_title`, `sub_menu_link`, `role_id`, `display_order`) VALUES
+(1, 1, 'Add Employee', '/user/create', 1, 1),
+(2, 1, 'View Employees', '/user/viewall', 1, 2),
+(3, 1, 'Add Employee', '/user/create', 2, 1),
+(4, 1, 'View Employees', '/user/viewall', 2, 2),
+(5, 1, 'Add Employee', '/user/create', 3, 1),
+(6, 1, 'View Employees', '/user/viewall', 3, 2),
+(7, 2, 'Request Leave', '/leave/request', 1, 1),
+(8, 2, 'Review Leave', '/leave/approve', 1, 2),
+(9, 2, 'Request Leave', '/leave/request', 2, 1),
+(10, 2, 'Review Leave', '/leave/approve', 2, 2),
+(11, 2, 'Request Leave', '/leave/request', 3, 1),
+(12, 2, 'Review Leave', '/leave/approve', 3, 2),
+(13, 2, 'Request Leave', '/leave/request', 4, 1),
+(14, 2, 'Review Leave', '/leave/approve', 4, 2),
+(15, 2, 'Request Leave', '/leave/request', 5, 1),
+(16, 3, 'Generate Payslips', '/payroll', 1, 1),
+(17, 3, 'Generate Payslips', '/payroll', 2, 1),
+(18, 3, 'Generate Payslips', '/payroll', 3, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `mi_details`
 --
 
@@ -313,7 +357,8 @@ INSERT INTO `mi_details` (`id`, `employeeID`, `name`, `relation`, `dob`, `aadhar
 (2, 'AKSP0001', 'mi2', 'mi2', '2000-01-01', 'nkjnil', '2019-02-28 22:24:56', '2019-03-01 14:54:56'),
 (3, 'AKSP0002', 'mi', 'mi', '2000-01-01', 'mi', '2019-02-28 22:25:03', '2019-03-01 14:55:03'),
 (4, 'AKSP0002', 'mi2', 'mi2', '2000-01-01', 'nkjnil', '2019-02-28 22:25:03', '2019-03-01 14:55:03'),
-(23, 'TA0001', 'f', 'f', '2000-01-01', 'kjjn', '2019-03-20 06:09:56', '2019-03-20 11:39:56');
+(23, 'TA0001', 'f', 'f', '2000-01-01', 'kjjn', '2019-03-20 06:09:56', '2019-03-20 11:39:56'),
+(24, 'TS0001', 'j', 'j', '2000-01-01', 'eafsad', '2019-04-03 07:39:39', '2019-04-03 13:09:39');
 
 -- --------------------------------------------------------
 
@@ -342,7 +387,42 @@ INSERT INTO `pf_details` (`id`, `employeeID`, `name`, `relation`, `dob`, `aadhar
 (2, 'AKSP0001', 'nm1', 'm', '2000-01-01', 'muujln', '2019-02-28 22:24:56', '2019-03-01 14:54:56'),
 (3, 'AKSP0002', 'ni', 'ni', '2000-01-01', 'in', '2019-02-28 22:25:03', '2019-03-01 14:55:03'),
 (4, 'AKSP0002', 'nm1', 'm', '2000-01-01', 'muujln', '2019-02-28 22:25:03', '2019-03-01 14:55:03'),
-(23, 'TA0001', 'f', 'f', '2000-10-01', 'wefdsd', '2019-03-20 06:09:56', '2019-03-20 11:39:56');
+(23, 'TA0001', 'f', 'f', '2000-10-01', 'wefdsd', '2019-03-20 06:09:56', '2019-03-20 11:39:56'),
+(24, 'TS0001', 'asd', 'asa', '2000-01-01', 'sdfasfd', '2019-04-03 07:39:39', '2019-04-03 13:09:39');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rbacs`
+--
+
+DROP TABLE IF EXISTS `rbacs`;
+CREATE TABLE `rbacs` (
+  `rbac_id` int(11) NOT NULL,
+  `main_menu_id` int(11) NOT NULL,
+  `main_menu_title` varchar(150) NOT NULL,
+  `menu_description` varchar(150) NOT NULL,
+  `menu_icon` varchar(150) NOT NULL,
+  `role_id` int(11) NOT NULL,
+  `display_order` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `rbacs`
+--
+
+INSERT INTO `rbacs` (`rbac_id`, `main_menu_id`, `main_menu_title`, `menu_description`, `menu_icon`, `role_id`, `display_order`) VALUES
+(1, 1, 'Employees', 'Manage Employees', 'fa fa-user', 1, 1),
+(2, 1, 'Employees', 'Manage Employees', 'fa fa-user', 2, 1),
+(3, 1, 'Employees', 'Manage Employees', 'fa fa-user', 3, 1),
+(4, 2, 'Leave', 'Manage Leave', 'fas fa-user-tag', 1, 2),
+(5, 2, 'Leave', 'Manage Leave', 'fas fa-user-tag', 2, 2),
+(6, 2, 'Leave', 'Manage Leave', 'fas fa-user-tag', 3, 2),
+(7, 2, 'Leave', 'Manage Leave', 'fas fa-user-tag', 4, 2),
+(8, 2, 'Leave', 'Manage Leave', 'fas fa-user-tag', 5, 2),
+(9, 3, 'Payroll', 'Manage Payroll', 'fas fa-money-check-alt', 1, 1),
+(10, 3, 'Payroll', 'Manage Payroll', 'fas fa-money-check-alt', 2, 1),
+(11, 3, 'Payroll', 'Manage Payroll', 'fas fa-money-check-alt', 3, 1);
 
 -- --------------------------------------------------------
 
@@ -410,9 +490,9 @@ CREATE TABLE `salary_variables` (
 --
 
 INSERT INTO `salary_variables` (`svariables_id`, `employeeID`, `Pay_Days`, `Present_Days`, `Referral_Bonus`, `ASP_Share`, `Arrears`, `Reimbursement`, `Marriage_Bonus`, `Total_Earning`, `PF`, `ESI`, `PT`, `TDS`, `Recoveries`, `Other_Deduction`, `Medical_Insurance`, `Loan_Recovery`, `created_at`, `updated_at`, `status`) VALUES
-(1, 'AKSP0001', 28, 28, 1000, 100, 200, 500, 400, NULL, 1500, 500, 200, 200, 200, 500, 500, 500, '2019-03-26 08:13:03', '2019-03-26 13:43:03', 1),
-(2, 'AKSP0002', 28, 27, 2000, 1000, 300, 400, 500, NULL, 1200, 300, 200, 500, 300, 200, 500, 200, '2019-03-26 08:13:03', '2019-03-28 01:40:26', 1),
-(3, 'TA0001', 26, 24, 2000, 400, 200, 1000, 3000, NULL, 2000, 200, 200, 1000, 500, 500, 500, 300, '2019-03-26 08:33:58', '2019-03-26 14:03:58', 1);
+(1, 'AKSP0001', 28, 28, 1000, 100, 200, 500, 400, NULL, 1500, 500, 200, 200, 200, 500, 500, 500, '2019-03-26 08:13:03', '2019-04-03 14:31:11', 1),
+(2, 'AKSP0002', 28, 27, 2000, 1000, 300, 400, 500, NULL, 1200, 300, 200, 500, 300, 200, 500, 200, '2019-03-26 08:13:03', '2019-04-03 14:31:16', 1),
+(3, 'TA0001', 26, 24, 2000, 400, 200, 1000, 3000, NULL, 2000, 200, 200, 1000, 500, 500, 500, 300, '2019-03-26 08:33:58', '2019-04-03 14:31:24', 1);
 
 -- --------------------------------------------------------
 
@@ -451,7 +531,7 @@ CREATE TABLE `users` (
   `password` varchar(200) NOT NULL,
   `firstname` varchar(150) NOT NULL,
   `lastname` varchar(150) NOT NULL,
-  `roleID` int(11) DEFAULT '1',
+  `roleID` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `status` int(11) NOT NULL DEFAULT '1'
@@ -462,9 +542,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`employeeID`, `password`, `firstname`, `lastname`, `roleID`, `created_at`, `updated_at`, `status`) VALUES
-('AKSP0001', 'tenvic', 's', 's', 1, '2019-02-28 16:54:56', '2019-03-07 18:25:33', 1),
-('AKSP0002', 'tenvic', 's', 's', 1, '2019-02-28 16:55:03', '2019-03-07 18:25:36', 1),
-('TA0001', 'tenvic', 'S3', 'C', 1, '2019-03-20 00:39:56', '2019-03-20 06:09:56', 1);
+('AKSP0001', 'tenvic', 's', 's', 1, '2019-02-28 16:54:56', '2019-04-03 14:27:02', 1),
+('AKSP0002', 'tenvic', 's', 's', 1, '2019-02-28 16:55:03', '2019-04-03 13:05:06', 1),
+('TA0001', 'tenvic', 'S3', 'C', 1, '2019-03-20 00:39:56', '2019-03-20 06:09:56', 1),
+('TS0001', 'tenvic', 'Employee1', 'one', 5, '2019-04-03 02:09:39', '2019-04-03 07:39:39', 1);
 
 -- --------------------------------------------------------
 
@@ -511,6 +592,9 @@ CREATE TABLE `user_details` (
   `passport_number` varchar(100) DEFAULT NULL,
   `salary_ac` varchar(150) NOT NULL,
   `personal_ac` varchar(150) NOT NULL,
+  `personal_bank` varchar(150) DEFAULT NULL,
+  `personal_ifsc` varchar(150) DEFAULT NULL,
+  `personal_branch` varchar(150) DEFAULT NULL,
   `salary` double NOT NULL,
   `gst` varchar(150) DEFAULT NULL,
   `father_name` varchar(150) NOT NULL,
@@ -533,10 +617,11 @@ CREATE TABLE `user_details` (
 -- Dumping data for table `user_details`
 --
 
-INSERT INTO `user_details` (`__id`, `employeeID`, `company`, `employee_type`, `designation`, `level`, `department`, `project_division`, `managerID`, `doj`, `exit_date`, `contract_from`, `contract_to`, `exit_remarks`, `school_academy`, `sport`, `location`, `mobile_no`, `emergency_contact_person`, `emergency_contact_number`, `official_email`, `personal_email`, `dob`, `gender`, `blood_group`, `maritial_status`, `educational_qualification`, `educational_qualification_details`, `sports_certification`, `experience_previous`, `pan_number`, `aadhar_number`, `uan`, `esic_number`, `passport_number`, `salary_ac`, `personal_ac`, `salary`, `gst`, `father_name`, `mother_name`, `pf_nominee_relation`, `pf_nominee_name`, `pf_nominee_dob`, `pf_nominee_aadhar`, `esi_nominee_relation`, `esi_nominee_name`, `esi_nominee_dob`, `esi_nominee_aadhar`, `present_address`, `permanent_address`, `created_at`, `updated_at`) VALUES
-(1, 'AKSP0001', 1, 1, 1, 2, 3, NULL, 'AKSP0002', '2000-01-01', NULL, NULL, NULL, NULL, NULL, NULL, 1, 8787878788, 'jbkyu', 789698, 'dasljnliu', 'hbkyblh', '2000-01-01', 'Male', 'O+', 'Single', 'PG', NULL, NULL, NULL, 'kyngi', 'yg iy', NULL, NULL, 'g iyggomh', '6897698769876', '76978698', 8769786986, '9769786987', 's', 's', 'n', 'n', '2000-01-01', 'n', 'e', 'e', '2000-01-01', 'e', 'adfZ', 'bbhlbh', '2019-02-28 16:54:56', '2019-02-28 16:54:56'),
-(2, 'AKSP0002', 1, 1, 1, 2, 3, NULL, '', '2000-01-01', NULL, NULL, NULL, NULL, NULL, NULL, 1, 8787878788, 'jbkyu', 789698, 'dasljnliu', 'hbkyblh', '2000-01-01', 'Male', 'O+', 'Single', 'PG', NULL, NULL, NULL, 'kyngi', 'yg iy', NULL, NULL, 'g iyggomh', '6897698769876', '76978698', 8769786986, '9769786987', 's', 's', 'n', 'n', '2000-01-01', 'n', 'e', 'e', '2000-01-01', 'e', 'adfZ', 'bbhlbh', '2019-02-28 16:55:03', '2019-02-28 16:55:03'),
-(21, 'TA0001', 1, 1, 1, 2, 3, 'IT', NULL, '2016-09-01', NULL, NULL, NULL, NULL, NULL, NULL, 1, 9999999999, 's', 8787878787, 's@s.com', 's@s.com', '2000-01-01', 'Male', 'O+', 'Single', 'PG', NULL, 'd', 'd', 'asdf', 'asdfa', 'asdf', 'sfg', 'pdf', '7987', '89798', 9999999, '89707oyi', 's', 's', 'f', 'f', '2000-01-01', 'luhlhj', 's', 's', '2000-01-01', 'kjnn', 'nkj', 'nkjn', '2019-03-20 00:39:56', '2019-03-20 00:39:56');
+INSERT INTO `user_details` (`__id`, `employeeID`, `company`, `employee_type`, `designation`, `level`, `department`, `project_division`, `managerID`, `doj`, `exit_date`, `contract_from`, `contract_to`, `exit_remarks`, `school_academy`, `sport`, `location`, `mobile_no`, `emergency_contact_person`, `emergency_contact_number`, `official_email`, `personal_email`, `dob`, `gender`, `blood_group`, `maritial_status`, `educational_qualification`, `educational_qualification_details`, `sports_certification`, `experience_previous`, `pan_number`, `aadhar_number`, `uan`, `esic_number`, `passport_number`, `salary_ac`, `personal_ac`, `personal_bank`, `personal_ifsc`, `personal_branch`, `salary`, `gst`, `father_name`, `mother_name`, `pf_nominee_relation`, `pf_nominee_name`, `pf_nominee_dob`, `pf_nominee_aadhar`, `esi_nominee_relation`, `esi_nominee_name`, `esi_nominee_dob`, `esi_nominee_aadhar`, `present_address`, `permanent_address`, `created_at`, `updated_at`) VALUES
+(1, 'AKSP0001', 1, 1, 1, 2, 3, NULL, 'AKSP0002', '2000-01-01', NULL, NULL, NULL, NULL, NULL, NULL, 1, 8787878788, 'jbkyu', 789698, 'dasljnliu', 'hbkyblh', '2000-01-01', 'Male', 'O+', 'Single', 'PG', NULL, NULL, NULL, 'AOIP3343324', 'yg iy', '33234543333', NULL, 'g iyggomh', '6897698769876', '76978698', NULL, NULL, NULL, 8769786986, '9769786987', 's', 's', 'n', 'n', '2000-01-01', 'n', 'e', 'e', '2000-01-01', 'e', 'adfZ', 'bbhlbh', '2019-02-28 16:54:56', '2019-02-28 16:54:56'),
+(2, 'AKSP0002', 1, 1, 1, 2, 3, NULL, '', '2000-01-01', NULL, NULL, NULL, NULL, NULL, NULL, 1, 8787878788, 'jbkyu', 789698, 'dasljnliu', 'hbkyblh', '2000-01-01', 'Male', 'O+', 'Single', 'PG', NULL, NULL, NULL, 'AW89797Q23', 'yg iy', '34234123412', NULL, 'g iyggomh', '6897698769876', '76978698', NULL, NULL, NULL, 8769786986, '9769786987', 's', 's', 'n', 'n', '2000-01-01', 'n', 'e', 'e', '2000-01-01', 'e', 'adfZ', 'bbhlbh', '2019-02-28 16:55:03', '2019-02-28 16:55:03'),
+(21, 'TA0001', 1, 1, 1, 2, 3, 'IT', NULL, '2016-09-01', NULL, NULL, NULL, NULL, NULL, NULL, 1, 9999999999, 's', 8787878787, 's@s.com', 's@s.com', '2000-01-01', 'Male', 'O+', 'Single', 'PG', NULL, 'd', 'd', 'AW89797454', 'asdfa', '22323432323', 'sfg', 'pdf', '7987', '89798', NULL, NULL, NULL, 9999999, '89707oyi', 's', 's', 'f', 'f', '2000-01-01', 'luhlhj', 's', 's', '2000-01-01', 'kjnn', 'nkj', 'nkjn', '2019-03-20 00:39:56', '2019-03-20 00:39:56'),
+(22, 'TS0001', 2, 1, 5, 1, 3, 'IT', NULL, '2019-04-03', NULL, NULL, NULL, NULL, NULL, NULL, 1, 8888888888, 'Mr contact', 9889798709, 'abc@abc.com', 'abc@abc.com', '2019-04-01', 'Male', 'B-', 'Single', 'PG', NULL, 'asdfa', 'pdf', 'AW897879', 'A3423wer', '432141234134', '2342413245134', 'PAwe8u0if', '123412341234', '31241212431', NULL, NULL, NULL, 20000, '324123412', 'MR father', 'Mrs Mother', 'a', 'a', '2000-01-01', 'das', 'q', 'q', '2000-01-01', 'luhio7hiu;j', 'asdf', 'asdf', '2019-04-03 02:09:39', '2019-04-03 02:09:39');
 
 --
 -- Indexes for dumped tables
@@ -613,6 +698,12 @@ ALTER TABLE `lop_records`
   ADD KEY `employeeID` (`employeeID`);
 
 --
+-- Indexes for table `menu_lists`
+--
+ALTER TABLE `menu_lists`
+  ADD PRIMARY KEY (`menu_id`);
+
+--
 -- Indexes for table `mi_details`
 --
 ALTER TABLE `mi_details`
@@ -625,6 +716,12 @@ ALTER TABLE `mi_details`
 ALTER TABLE `pf_details`
   ADD PRIMARY KEY (`id`),
   ADD KEY `employeeID` (`employeeID`);
+
+--
+-- Indexes for table `rbacs`
+--
+ALTER TABLE `rbacs`
+  ADD PRIMARY KEY (`rbac_id`);
 
 --
 -- Indexes for table `salary_constants`
@@ -679,7 +776,7 @@ ALTER TABLE `department`
 -- AUTO_INCREMENT for table `designation`
 --
 ALTER TABLE `designation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `employee_types`
@@ -691,7 +788,7 @@ ALTER TABLE `employee_types`
 -- AUTO_INCREMENT for table `esi_details`
 --
 ALTER TABLE `esi_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `institutes`
@@ -703,7 +800,7 @@ ALTER TABLE `institutes`
 -- AUTO_INCREMENT for table `leave_quota`
 --
 ALTER TABLE `leave_quota`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `leave_records`
@@ -730,16 +827,28 @@ ALTER TABLE `lop_records`
   MODIFY `lop_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `menu_lists`
+--
+ALTER TABLE `menu_lists`
+  MODIFY `menu_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
 -- AUTO_INCREMENT for table `mi_details`
 --
 ALTER TABLE `mi_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `pf_details`
 --
 ALTER TABLE `pf_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
+-- AUTO_INCREMENT for table `rbacs`
+--
+ALTER TABLE `rbacs`
+  MODIFY `rbac_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `salary_constants`
@@ -763,7 +872,7 @@ ALTER TABLE `sports`
 -- AUTO_INCREMENT for table `user_details`
 --
 ALTER TABLE `user_details`
-  MODIFY `__id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `__id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- Constraints for dumped tables
